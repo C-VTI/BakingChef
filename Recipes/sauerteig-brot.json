@@ -1,0 +1,39 @@
+{
+  "id": "sauerteig-brot",
+  "name": "Sauerteig Brot",
+  "description": "Die Zeit hinter jedem Schritt ist die Wartezeit bis zum nächsten Schritt bzw. bis das Brot fertig ist.",
+  "steps": [
+    {
+      "title": "Sauerteig ansetzen",
+      "ingredients": [
+        { "name": "Starter", "amount": 40, "unit": "g" },
+        { "name": "Wasser", "amount": 30, "unit": "g" },
+        { "name": "Mehl", "amount": 30, "unit": "g" }
+      ],
+      "wait": "04:00"
+    },
+    {
+      "title": "Zutaten mischen",
+      "ingredients": [
+        { "name": "Wasser", "amount": 400, "amountMax": 450, "unit": "g" },
+        { "name": "Salz", "amount": 10, "unit": "g" },
+        { "name": "Mehl", "amount": 500, "unit": "g" }
+      ],
+      "wait": "01:30"
+    },
+    { "title": "Dehnen & Falten I", "wait": "00:30" },
+    { "title": "Dehnen & Falten II", "wait": "00:30" },
+    { "title": "Dehnen & Falten III", "wait": "01:00" },
+    { "title": "Vorformen & Stockgare", "wait": "00:15" },
+    {
+      "title": "Stückgare",
+      "wait": "02:00"
+    },
+    {
+      "title": "Backen 240° mit Deckel",
+      "reminder": { "before": "00:45", "text": "Ofen mit Topf auf 240° vorheizen" },
+      "wait": "00:20"
+    },
+    { "title": "Backen 230° ohne Deckel", "wait": "00:20" }
+  ]
+}

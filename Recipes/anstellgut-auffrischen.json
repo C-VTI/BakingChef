@@ -1,0 +1,14 @@
+{
+  "id": "anstellgut-auffrischen",
+  "name": "Anstellgut auffrischen",
+  "steps": [
+    {
+      "title": "Anstellgut auffrischen",
+      "ingredients": [
+        { "name": "Anstellgut", "amount": 50, "unit": "g" },
+        { "name": "Wasser", "amount": 130, "unit": "g" },
+        { "name": "Mehl", "amount": 100, "unit": "g" }
+      ]
+    }
+  ]
+}
