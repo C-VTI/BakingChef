@@ -16,9 +16,9 @@ Back-Zeitplan als abhakbare Taskliste mit Erinnerungen – für iPhone und Apple
 
 1. Xcode öffnen → **Settings → Accounts** → Apple-ID hinzufügen (ergibt ein „Personal Team“).
 2. `BakingChef.xcodeproj` öffnen.
-3. Projekt **BakingChef** → Tab *Build Settings* (Ebene Projekt, nicht Target):
+3. In `project.yml` (danach `xcodegen generate`) oder im Projekt **BakingChef** → Tab *Build Settings* (Ebene Projekt, nicht Target):
    - `BASE_BUNDLE_ID` auf etwas Eindeutiges ändern, z. B. `ch.<deinname>.bakingchef`
-   - `DEVELOPMENT_TEAM` → dein Personal Team (oder in jedem der 3 Targets unter *Signing & Capabilities* das Team wählen)
+   - `DEVELOPMENT_TEAM` → die ID deines Personal Teams (eingetragen ist die des Repo-Besitzers; alternativ in jedem der 3 Targets unter *Signing & Capabilities* das Team wählen)
 4. iPhone per Kabel verbinden, auf dem iPhone **Einstellungen → Datenschutz & Sicherheit → Entwicklermodus** aktivieren.
 5. Schema **BakingChef** + dein iPhone wählen → ▶︎ Run.
 6. Beim ersten Start auf dem iPhone: **Einstellungen → Allgemein → VPN & Geräteverwaltung** → Entwickler-App vertrauen.
@@ -31,6 +31,17 @@ Projektdatei neu erzeugen (nach Änderungen an `project.yml` oder neuen Dateien)
 ```sh
 brew install xcodegen   # einmalig
 xcodegen generate
+```
+
+## App-Icon
+
+Das Icon (Brotlaib im Vintage-Stil) wird per Script gezeichnet und liegt als 1024×1024-PNG in
+`BakingChef/Assets.xcassets` und `BakingChefWatch/Assets.xcassets`. Nach Änderungen an Farben/Formen neu erzeugen:
+
+```sh
+swiftc Tools/make-icon.swift -o /tmp/make-icon
+/tmp/make-icon BakingChef/Assets.xcassets/AppIcon.appiconset/AppIcon.png
+cp BakingChef/Assets.xcassets/AppIcon.appiconset/AppIcon.png BakingChefWatch/Assets.xcassets/AppIcon.appiconset/
 ```
 
 ## Rezept-Format (JSON)
@@ -82,3 +93,4 @@ Import: JSON-Datei in iCloud Drive / „Auf meinem iPhone“ ablegen (oder per A
 | `BakingChefWidget` | Live Activity / Dynamic Island |
 | `BakingChefWatch` | Watch-App |
 | `Recipes` | Eingebaute Rezepte |
+| `Tools` | Hilfsscripts (App-Icon erzeugen) |

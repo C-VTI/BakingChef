@@ -29,14 +29,22 @@ final class AppDelegate: NSObject, UIApplicationDelegate {
 
 struct RootView: View {
     @Environment(AppModel.self) private var model
+    @State private var path: [Recipe] = []
 
     var body: some View {
-        NavigationStack {
-            if let session = model.session {
-                SessionView(session: session)
-            } else {
-                RecipeListView()
+        NavigationStack(path: $path) {
+            Group {
+                if let session = model.session {
+                    SessionView(session: session)
+                } else {
+                    RecipeListView()
+                }
             }
+            // Registered at the root so it stays valid while the root content switches.
+            .navigationDestination(for: Recipe.self) { RecipeDetailView(recipe: $0) }
         }
+        // Starting (or ending) a session swaps the root view; pop the recipe detail
+        // so the user lands directly on the running session.
+        .onChange(of: model.session?.id) { _, _ in path.removeAll() }
     }
 }

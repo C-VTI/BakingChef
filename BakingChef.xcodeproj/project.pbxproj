@@ -30,11 +30,13 @@
 		A4F8AE1255E330831498A405 /* RecipeListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90CF2F46BCD98C1D14C85217 /* RecipeListView.swift */; };
 		A56DEB8CC799CFE3AF9C5A87 /* Recipe.swift in Sources */ = {isa = PBXBuildFile; fileRef = D61A8CAFDFF31A00E7027B3A /* Recipe.swift */; };
 		AF1D505D043F93C63F789C29 /* Sync.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FFE582BFC899EBE7A701C60 /* Sync.swift */; };
+		B18413F0D00B67A67D8122E6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2AED09F0612CF7410F03179E /* Assets.xcassets */; };
 		CC9788FE702E4495633E9F78 /* SessionCountdown.swift in Sources */ = {isa = PBXBuildFile; fileRef = 329DE0746DD31E9E9A53378D /* SessionCountdown.swift */; };
 		D19E33894F8C6592FFBDF6F7 /* NotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32FAA17723C2DA76C5831F96 /* NotificationManager.swift */; };
 		DB947F1DAAE52505DF27C29D /* Format.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63A4CE978450E3BCA7F55D6A /* Format.swift */; };
 		E57A4762397888735BC46554 /* LiveActivityController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCAD7C86BAB21F510F26133B /* LiveActivityController.swift */; };
 		EE942D435EE7C39C8ECDEC52 /* PhoneConnectivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = B15A5247C8081638A0BAC153 /* PhoneConnectivity.swift */; };
+		FF5B5E4EB7224C24F90BD1C5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9541FB6B022C6EC4C6C0F9A4 /* Assets.xcassets */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -85,6 +87,7 @@
 		1E59B6FC0A492F99361AB334 /* RecipeStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeStore.swift; sourceTree = "<group>"; };
 		1F2E9771A954F23168D4DB44 /* BakeActivityAttributes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BakeActivityAttributes.swift; sourceTree = "<group>"; };
 		227712B2829FD7786B82DC08 /* BakeLiveActivity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BakeLiveActivity.swift; sourceTree = "<group>"; };
+		2AED09F0612CF7410F03179E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		2C2EF5E27FE6CE3D85C69D34 /* BakingChefWidget.appex */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = "wrapper.app-extension"; path = BakingChefWidget.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		329DE0746DD31E9E9A53378D /* SessionCountdown.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionCountdown.swift; sourceTree = "<group>"; };
 		32FAA17723C2DA76C5831F96 /* NotificationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationManager.swift; sourceTree = "<group>"; };
@@ -95,6 +98,7 @@
 		7FFE582BFC899EBE7A701C60 /* Sync.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sync.swift; sourceTree = "<group>"; };
 		87286901E8CBE614772FAA1E /* Recipes */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Recipes; sourceTree = SOURCE_ROOT; };
 		90CF2F46BCD98C1D14C85217 /* RecipeListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeListView.swift; sourceTree = "<group>"; };
+		9541FB6B022C6EC4C6C0F9A4 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		97633D6FFA0F5B69427F8B63 /* SessionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionView.swift; sourceTree = "<group>"; };
 		A125D618CA899D0F503B31F9 /* BakingChefApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BakingChefApp.swift; sourceTree = "<group>"; };
 		A9D59AC989540FAED95EDB28 /* AdjustTimeSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdjustTimeSheet.swift; sourceTree = "<group>"; };
@@ -135,6 +139,7 @@
 			isa = PBXGroup;
 			children = (
 				EEECCF1F9DBFD966963EB8DD /* AppModel.swift */,
+				9541FB6B022C6EC4C6C0F9A4 /* Assets.xcassets */,
 				A125D618CA899D0F503B31F9 /* BakingChefApp.swift */,
 				D21159D4F4CBCBAA3BC57559 /* Info.plist */,
 				CCAD7C86BAB21F510F26133B /* LiveActivityController.swift */,
@@ -170,6 +175,7 @@
 		97764F20D3193EC938E7ED77 /* BakingChefWatch */ = {
 			isa = PBXGroup;
 			children = (
+				2AED09F0612CF7410F03179E /* Assets.xcassets */,
 				ED983B849F9FCF1A31295942 /* BakingChefWatchApp.swift */,
 				B10E0826F2D7686A5E6954A5 /* Info.plist */,
 				41BF77887982E9F2CAC6E38E /* WatchRootView.swift */,
@@ -221,6 +227,7 @@
 			buildConfigurationList = 34FC8B7736576E8D96B633EC /* Build configuration list for PBXNativeTarget "BakingChefWatch" */;
 			buildPhases = (
 				FA77234FA3A2310232BA0AE1 /* Sources */,
+				4C21B535A45FC87A92232EBC /* Resources */,
 			);
 			buildRules = (
 			);
@@ -282,15 +289,15 @@
 				LastUpgradeCheck = 1430;
 				TargetAttributes = {
 					359412FB67A034C871FA4425 = {
-						DevelopmentTeam = "";
+						DevelopmentTeam = 8G6Z3V2YZ2;
 						ProvisioningStyle = Automatic;
 					};
 					5B7D739DFB9B5630FA77BD79 = {
-						DevelopmentTeam = "";
+						DevelopmentTeam = 8G6Z3V2YZ2;
 						ProvisioningStyle = Automatic;
 					};
 					93650C611E6924CED18B8D35 = {
-						DevelopmentTeam = "";
+						DevelopmentTeam = 8G6Z3V2YZ2;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -317,10 +324,19 @@
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		4C21B535A45FC87A92232EBC /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B18413F0D00B67A67D8122E6 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		CBAF6040D460ADFC8EBCDEB9 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FF5B5E4EB7224C24F90BD1C5 /* Assets.xcassets in Resources */,
 				05532A052AFFE545F8D64FBF /* Recipes in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -440,7 +456,7 @@
 				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = dwarf;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = 8G6Z3V2YZ2;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
@@ -523,7 +539,7 @@
 				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = 8G6Z3V2YZ2;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;

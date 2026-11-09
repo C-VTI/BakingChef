@@ -20,7 +20,6 @@ struct RecipeListView: View {
             }
         }
         .navigationTitle("Rezepte")
-        .navigationDestination(for: Recipe.self) { RecipeDetailView(recipe: $0) }
         .toolbar {
             ToolbarItem(placement: .primaryAction) {
                 Button { showImporter = true } label: {
