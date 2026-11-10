@@ -60,20 +60,21 @@ private struct WatchSessionView: View {
             }
 
             Section("Schritte") {
+                let schedule = session.schedule(at: .now)
                 ForEach(session.steps.indices, id: \.self) { i in
                     HStack {
                         Image(systemName: session.steps[i].isDone ? "checkmark.circle.fill" : "circle")
                             .foregroundStyle(session.steps[i].isDone ? .green : .secondary)
                         VStack(alignment: .leading) {
                             Text(session.recipe.steps[i].title).font(.footnote)
-                            Text(Format.time(session.steps[i].completedAt ?? session.steps[i].dueAt))
+                            Text(Format.time(session.steps[i].completedAt ?? schedule.starts[i]))
                                 .font(.caption2).foregroundStyle(.secondary)
                         }
                     }
                 }
                 HStack {
                     Image(systemName: "flag.checkered")
-                    Text("Fertig \(Format.time(session.finishAt))").font(.footnote)
+                    Text("Fertig ca. \(Format.time(schedule.finish))").font(.footnote)
                 }
             }
         }

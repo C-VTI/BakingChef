@@ -4,10 +4,11 @@ Back-Zeitplan als abhakbare Taskliste mit Erinnerungen – für iPhone und Apple
 
 - **Rezepte** als JSON (eingebaut: *Sauerteig Brot*, *Anstellgut auffrischen*), eigene per „Importieren“
 - **Menge** mit Multiplikator (0.5er-Schritte)
-- **Start jetzt** → Zeitplan wird vorwärts berechnet
-- **Benachrichtigungen** (lokal, kein Server): 5 min vorher, bei Fälligkeit (mit Knopf „Erledigt ✓“), bei Fertig. Optional pro Schritt eine eigene Erinnerung (z. B. Ofen vorheizen)
-- **Verspätung** wird angezeigt („Du bist 5 min später dran“) und lässt sich mit einem Tipp übernehmen. Der Plan verschiebt sich nie automatisch
-- **Pause** (Kühlschrank): Countdown friert ein, beim Fortsetzen verschieben sich alle offenen Schritte um die Pausendauer
+- **Start jetzt** → Zeitplan wird vorwärts berechnet (Bearbeitungsdauer + Wartezeit pro Schritt)
+- **Wartezeit startet mit „Erledigt“**: der nächste Schritt ist fällig um „erledigt + Wartezeit“. Spätere Schritte und „Fertig ca.“ sind eine Prognose, die sich automatisch nachführt, wenn ein Schritt länger dauert
+- **Abhaken** eines Schritts hakt alle davor mit ab (Überspringen); Tippen auf einen erledigten Schritt springt dorthin zurück und öffnet ihn samt allen folgenden wieder
+- **Benachrichtigungen** (lokal, kein Server) für den nächsten Schritt: 5 min vorher, bei Fälligkeit (mit Knopf „Erledigt ✓“); „Fertig“, sobald alles abgehakt ist. Optional pro Schritt eine eigene Erinnerung (z. B. Ofen vorheizen) – gemäss Prognose, wird bei jeder Änderung neu geplant
+- **Pause** (Kühlschrank): Countdown friert ein, beim Fortsetzen verschiebt sich der nächste Schritt (und damit alle folgenden) um die Pausendauer
 - **Zeit anpassen** mit dem iOS-Timer-Scrollrad: Restzeit direkt setzen oder Plan später/früher verschieben (auch: Tipp auf den Countdown)
 - **Live Activity**: Countdown auf dem Sperrbildschirm / in der Dynamic Island
 - **Apple Watch**: Countdown, Erledigt, +5 min, Pause. Benachrichtigungen kommen auf die Uhr, wenn das iPhone gesperrt ist
@@ -58,11 +59,13 @@ cp BakingChef/Assets.xcassets/AppIcon.appiconset/AppIcon.png BakingChefWatch/Ass
         { "name": "Wasser", "amount": 400, "amountMax": 450, "unit": "g" },
         { "name": "Salz", "amount": 10, "unit": "g" }
       ],
+      "work": "00:10",
       "wait": "01:30"
     },
     {
       "title": "Backen 240° mit Deckel",
       "reminder": { "before": "00:45", "text": "Ofen mit Topf auf 240° vorheizen" },
+      "work": "00:01",
       "wait": "00:20"
     }
   ]
@@ -74,7 +77,8 @@ cp BakingChef/Assets.xcassets/AppIcon.appiconset/AppIcon.png BakingChefWatch/Ass
 | `id` | nein | Eindeutige ID; gleiche ID ersetzt ein vorhandenes Rezept. Fehlt sie, wird sie aus dem Namen gebildet |
 | `name` | ja | Anzeigename |
 | `steps[].title` | ja | Name des Schritts |
-| `steps[].wait` | nein | Wartezeit **nach** diesem Schritt bis zum nächsten bzw. bis fertig (`"HH:MM"`). Ohne `wait` überall → Rezept ohne Zeitplan |
+| `steps[].wait` | nein | Wartezeit ab „Erledigt“ bis zum nächsten Schritt bzw. bis fertig (`"HH:MM"`). Ohne `wait` überall → Rezept ohne Zeitplan |
+| `steps[].work` | nein | Erwartete Bearbeitungsdauer des Schritts (`"HH:MM"`, Standard 0) – nur für die Prognose |
 | `steps[].ingredients` | nein | `name`, `amount`, optional `amountMax` (Bereich) und `unit` (Standard `g`) |
 | `steps[].note` | nein | Notiz (erscheint in der Benachrichtigung, wenn keine Zutaten) |
 | `steps[].reminder` | nein | Zusätzliche Erinnerung `before` (`"HH:MM"`) vor dem Schritt |

@@ -1,10 +1,8 @@
 import Foundation
 
 struct SessionStep: Codable, Hashable {
-    var dueAt: Date
     var completedAt: Date?
-    /// Intentional extra time (fridge pause, manual shift) added while this step was the next one.
-    /// Not counted as "delay" when suggesting a plan adjustment.
+    /// Intentional extra time (fridge pause, manual adjustment, +5 min) added while this step was the next one.
     var extraSeconds: TimeInterval = 0
 
     var isDone: Bool { completedAt != nil }
@@ -19,19 +17,22 @@ enum SessionAction: Codable, Hashable {
     case shift(seconds: Double)
 }
 
-/// A running bake: the recipe, its timetable and what has been checked off.
+/// A running bake: the recipe, what has been checked off and the resulting timetable.
 ///
 /// Timing rules
-/// - Step *i* is due at start + sum of the waits of all previous steps.
-/// - Checking off late does NOT move the plan automatically; `suggestedShift` tells how far behind you are.
-/// - Pause (fridge) freezes the countdown; resuming moves all open steps by the pause length.
+/// - The waiting time starts when a step is checked off: step *i + 1* is due at
+///   "step *i* done + wait of step *i*" (+ intentional extra time).
+/// - Steps further ahead are a forecast: expected work time + waiting time of every open step.
+///   If the current step takes longer than its work time, the forecast moves along automatically.
+/// - Checking off a step also checks off all steps before it; unchecking reopens all steps after it.
+/// - Pause (fridge) freezes the countdown; resuming moves the next step by the pause length.
 struct BakeSession: Codable, Hashable, Identifiable {
     var id: UUID
     var recipe: Recipe
     var multiplier: Double
     var startedAt: Date
     var steps: [SessionStep]
-    var finishAt: Date
+    /// Finish time as planned at the start (for the "+12 min" deviation).
     var originalFinishAt: Date
     var finishExtraSeconds: TimeInterval = 0
     var pausedAt: Date?
@@ -41,15 +42,8 @@ struct BakeSession: Codable, Hashable, Identifiable {
         self.recipe = recipe
         self.multiplier = multiplier
         startedAt = start
-        var t = start
-        var list: [SessionStep] = []
-        for step in recipe.steps {
-            list.append(SessionStep(dueAt: t))
-            t += TimeInterval(step.waitMinutes * 60)
-        }
-        steps = list
-        finishAt = t
-        originalFinishAt = t
+        steps = recipe.steps.map { _ in SessionStep() }
+        originalFinishAt = start.addingTimeInterval(TimeInterval(recipe.totalMinutes * 60))
     }
 
     // MARK: State
@@ -59,30 +53,58 @@ struct BakeSession: Codable, Hashable, Identifiable {
     var allStepsDone: Bool { nextIndex == nil }
     var doneCount: Int { steps.filter(\.isDone).count }
 
-    /// The next moment that matters: the next open step, or the finish time.
-    var nextDue: Date { nextIndex.map { steps[$0].dueAt } ?? finishAt }
-    var nextTitle: String { nextIndex.map { recipe.steps[$0].title } ?? "Fertig" }
-
     /// "now", frozen while paused.
     func clock(_ now: Date) -> Date { pausedAt ?? now }
-    /// Seconds until `nextDue`; negative = overdue.
-    func remaining(at now: Date) -> TimeInterval { nextDue.timeIntervalSince(clock(now)) }
-    func isFinished(at now: Date) -> Bool { allStepsDone && !isPaused && now >= finishAt }
-    /// Total deviation of the finish time from the original plan.
-    var finishDeviation: TimeInterval { finishAt.timeIntervalSince(originalFinishAt) }
 
-    /// How far the next step should move so that it is due exactly
-    /// "previous completion + waiting time" (+ intentional extra time).
-    /// Positive = you are behind, negative = ahead. `nil` when below one minute.
-    var suggestedShift: TimeInterval? {
-        guard !isPaused else { return nil }
-        let next = nextIndex ?? steps.count
-        guard next > 0, let done = steps[next - 1].completedAt else { return nil }
-        let extra = next < steps.count ? steps[next].extraSeconds : finishExtraSeconds
-        let ideal = done + TimeInterval(recipe.steps[next - 1].waitMinutes * 60) + extra
-        let delta = (ideal.timeIntervalSince(nextDue) / 60).rounded(.towardZero) * 60
-        return abs(delta) >= 60 ? delta : nil
+    /// Start of every step (done steps: when it was due) and the finish time, as expected at `now`.
+    func schedule(at now: Date) -> (starts: [Date], finish: Date) {
+        let next = nextIndex
+        // A running pause will be added to the next step when resuming.
+        let pending = pausedAt.map { max(0, now.timeIntervalSince($0)) } ?? 0
+        var starts: [Date] = []
+        var t = startedAt
+        for (i, state) in steps.enumerated() {
+            let step = recipe.steps[i]
+            var start = t.addingTimeInterval(state.extraSeconds)
+            if i == next { start += pending }
+            starts.append(start)
+            let done: Date
+            if let completed = state.completedAt {
+                done = completed
+            } else {
+                let expected = start.addingTimeInterval(TimeInterval(step.workMinutes * 60))
+                // The step that is due right now cannot be done before now.
+                done = i == next ? max(expected, now) : expected
+            }
+            t = done.addingTimeInterval(TimeInterval(step.waitMinutes * 60))
+        }
+        var finish = t.addingTimeInterval(finishExtraSeconds)
+        if next == nil { finish += pending }
+        return (starts, finish)
     }
+
+    /// The next moment that matters: when the next open step is due, or the finish time.
+    /// Fixed (does not depend on "now"), because everything before it is checked off.
+    var nextDue: Date {
+        let s = schedule(at: clock(.now))
+        return nextIndex.map { s.starts[$0] } ?? s.finish
+    }
+    var nextTitle: String { nextIndex.map { recipe.steps[$0].title } ?? "Fertig" }
+    /// Expected work time of the next step (0 when in the oven).
+    var nextWorkSeconds: TimeInterval {
+        nextIndex.map { TimeInterval(recipe.steps[$0].workMinutes * 60) } ?? 0
+    }
+
+    func finish(at now: Date) -> Date { schedule(at: now).finish }
+    /// Seconds until `nextDue`; negative = the step is due (time since).
+    func remaining(at now: Date) -> TimeInterval { nextDue.timeIntervalSince(clock(now)) }
+    /// The next step is due and takes longer than its expected work time.
+    func isOverdue(at now: Date) -> Bool {
+        !isPaused && nextIndex != nil && -remaining(at: now) > max(60, nextWorkSeconds)
+    }
+    func isFinished(at now: Date) -> Bool { allStepsDone && !isPaused && now >= finish(at: now) }
+    /// Deviation of the expected finish time from the original plan.
+    func finishDeviation(at now: Date) -> TimeInterval { finish(at: now).timeIntervalSince(originalFinishAt) }
 
     // MARK: Mutations
 
@@ -90,16 +112,23 @@ struct BakeSession: Codable, Hashable, Identifiable {
         switch action {
         case .complete(let i):
             guard steps.indices.contains(i), !steps[i].isDone else { return }
-            steps[i].completedAt = now
+            resume(at: now)
+            // Checking off a later step also checks off all skipped ones before it.
+            for j in 0...i where !steps[j].isDone { steps[j].completedAt = now }
         case .uncomplete(let i):
             guard steps.indices.contains(i) else { return }
-            steps[i].completedAt = nil
+            // Jump back: this step and all after it are open again.
+            for j in i..<steps.count {
+                steps[j].completedAt = nil
+                if j > i { steps[j].extraSeconds = 0 }
+            }
+            finishExtraSeconds = 0
         case .pause:
             pause(at: now)
         case .resume:
             resume(at: now)
         case .shift(let seconds):
-            shift(by: seconds, intentional: true)
+            shift(by: seconds)
         }
     }
 
@@ -107,20 +136,10 @@ struct BakeSession: Codable, Hashable, Identifiable {
         apply(steps[i].isDone ? .uncomplete(step: i) : .complete(step: i), at: now)
     }
 
-    /// Moves all open steps and the finish time.
-    /// - Parameter intentional: `true` for manual shifts / pauses (wanted extra time),
-    ///   `false` when applying `suggestedShift` (catching up with reality).
-    mutating func shift(by delta: TimeInterval, intentional: Bool) {
+    /// Moves the next step (and with it everything after it) by `delta`.
+    mutating func shift(by delta: TimeInterval) {
         guard delta != 0 else { return }
-        for i in steps.indices where !steps[i].isDone { steps[i].dueAt += delta }
-        finishAt += delta
-        guard intentional else { return }
         if let i = nextIndex { steps[i].extraSeconds += delta } else { finishExtraSeconds += delta }
-    }
-
-    /// Sets the countdown to the next step to `remaining` and moves all later steps accordingly.
-    mutating func setRemaining(_ remaining: TimeInterval, at now: Date = .now) {
-        shift(by: clock(now).addingTimeInterval(remaining).timeIntervalSince(nextDue), intentional: true)
     }
 
     mutating func pause(at now: Date = .now) {
@@ -130,7 +149,7 @@ struct BakeSession: Codable, Hashable, Identifiable {
     mutating func resume(at now: Date = .now) {
         guard let p = pausedAt else { return }
         pausedAt = nil
-        shift(by: max(0, now.timeIntervalSince(p)), intentional: true)
+        shift(by: max(0, now.timeIntervalSince(p)))
     }
 
     // MARK: Notifications
@@ -151,15 +170,21 @@ struct BakeSession: Codable, Hashable, Identifiable {
     }
 
     /// All notifications that should be pending right now. Empty while paused.
+    ///
+    /// Only the next step gets "in 5 min" / "now" notifications – later steps depend on when
+    /// the current one is checked off. Custom reminders (e.g. preheat the oven) are planned
+    /// for later steps too, using the forecast; they are rescheduled on every change.
     func notificationPlan(now: Date) -> [PlannedNotification] {
         guard !isPaused else { return [] }
         var out: [PlannedNotification] = []
         let ids = { (i: Int, kind: String) in "\(id.uuidString)-\(i)-\(kind)" }
         let count = steps.count
+        let (starts, finish) = schedule(at: now)
+        let next = nextIndex
 
         for (i, state) in steps.enumerated() where !state.isDone {
             let step = recipe.steps[i]
-            let due = state.dueAt
+            let due = starts[i]
             let position = "Schritt \(i + 1) von \(count)"
 
             if let r = step.reminder, r.minutesBefore > 0 {
@@ -167,9 +192,10 @@ struct BakeSession: Codable, Hashable, Identifiable {
                 if at > now {
                     out.append(.init(id: ids(i, "reminder"), date: at,
                                      title: r.text,
-                                     body: "In \(Format.duration(minutes: r.minutesBefore)): \(step.title)"))
+                                     body: "In ca. \(Format.duration(minutes: r.minutesBefore)): \(step.title)"))
                 }
             }
+            guard i == next else { continue }
             let pre = due.addingTimeInterval(-Self.preWarning)
             if pre > now {
                 out.append(.init(id: ids(i, "pre"), date: pre,
@@ -186,14 +212,15 @@ struct BakeSession: Codable, Hashable, Identifiable {
             }
         }
 
-        let preFinish = finishAt.addingTimeInterval(-Self.preWarning)
+        guard next == nil else { return out }
+        let preFinish = finish.addingTimeInterval(-Self.preWarning)
         if preFinish > now {
             out.append(.init(id: ids(count, "pre"), date: preFinish,
                              title: "In 5 min fertig",
-                             body: "\(recipe.name) – um \(Format.time(finishAt))"))
+                             body: "\(recipe.name) – um \(Format.time(finish))"))
         }
-        if finishAt > now {
-            out.append(.init(id: ids(count, "due"), date: finishAt,
+        if finish > now {
+            out.append(.init(id: ids(count, "due"), date: finish,
                              title: "Fertig! 🍞",
                              body: "\(recipe.name) ist fertig."))
         }

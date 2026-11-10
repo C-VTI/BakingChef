@@ -54,7 +54,7 @@ struct AdjustTimeSheet: View {
 
                 VStack(spacing: 2) {
                     Text("\(session.nextTitle): \(Format.dayTime(session.nextDue.addingTimeInterval(delta)))")
-                    Text("Fertig ca. \(Format.dayTime(session.finishAt.addingTimeInterval(delta)))")
+                    Text("Fertig ca. \(Format.dayTime(session.finish(at: .now).addingTimeInterval(delta)))")
                 }
                 .font(.subheadline)
                 .foregroundStyle(.secondary)
@@ -72,7 +72,7 @@ struct AdjustTimeSheet: View {
                 ToolbarItem(placement: .confirmationAction) {
                     Button("Übernehmen") {
                         let d = delta
-                        model.mutate { $0.shift(by: d, intentional: true) }
+                        model.apply(.shift(seconds: d))
                         dismiss()
                     }
                     .bold()

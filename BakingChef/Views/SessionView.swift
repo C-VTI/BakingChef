@@ -9,18 +9,20 @@ struct SessionView: View {
     var body: some View {
         TimelineView(.periodic(from: .now, by: 1)) { context in
             let now = context.date
+            let schedule = session.schedule(at: now)
             List {
-                Section { StatusCard(session: session, now: now, showAdjust: $showAdjust) }
+                Section { StatusCard(session: session, now: now, finish: schedule.finish,
+                                     showAdjust: $showAdjust) }
 
-                if let delta = session.suggestedShift {
-                    Section { DelayBanner(delta: delta) }
-                }
-
-                Section("Schritte") {
+                Section {
                     ForEach(session.steps.indices, id: \.self) { i in
-                        SessionStepRow(session: session, index: i, now: now)
+                        SessionStepRow(session: session, index: i, start: schedule.starts[i], now: now)
                     }
-                    FinishRow(session: session)
+                    FinishRow(finish: schedule.finish, now: now)
+                } header: {
+                    Text("Schritte")
+                } footer: {
+                    Text("Tippen hakt einen Schritt samt allen davor ab. Tippen auf einen erledigten Schritt springt dorthin zurück.")
                 }
             }
         }
@@ -55,6 +57,7 @@ private struct StatusCard: View {
     @Environment(AppModel.self) private var model
     let session: BakeSession
     let now: Date
+    let finish: Date
     @Binding var showAdjust: Bool
 
     var body: some View {
@@ -84,6 +87,9 @@ private struct StatusCard: View {
     @ViewBuilder private var runningContent: some View {
         let remaining = session.remaining(at: now)
         let next = session.nextIndex
+        let isDue = remaining < 0 && !session.isPaused && next != nil
+        let overdue = session.isOverdue(at: now)
+        let deviation = session.finishDeviation(at: now)
 
         HStack {
             if session.isPaused {
@@ -91,7 +97,7 @@ private struct StatusCard: View {
                       systemImage: "snowflake")
                     .foregroundStyle(.blue)
             } else if let next {
-                Text("Nächster Schritt · \(next + 1)/\(session.steps.count)")
+                Text("\(isDue ? "Jetzt" : "Nächster Schritt") · \(next + 1)/\(session.steps.count)")
             } else {
                 Text("Im Ofen")
             }
@@ -107,21 +113,26 @@ private struct StatusCard: View {
             Text((remaining < 0 ? "+" : "") + Format.countdown(remaining))
                 .font(.system(size: 56, weight: .semibold, design: .rounded))
                 .monospacedDigit()
-                .foregroundStyle(remaining < 0 && !session.isPaused ? .red : .primary)
+                .foregroundStyle(overdue ? .red : (isDue ? .orange : .primary))
                 .contentTransition(.numericText(countsDown: true))
                 .onTapGesture { if !session.isPaused { showAdjust = true } }
             Spacer()
         }
-        if remaining < 0 && !session.isPaused {
-            Text("überfällig").font(.caption).foregroundStyle(.red)
+        if overdue {
+            Text("überfällig – Wartezeit startet mit „Erledigt“").font(.caption).foregroundStyle(.red)
+        } else if isDue {
+            Text(session.nextWorkSeconds > 0
+                 ? "Jetzt erledigen · ca. \(Format.duration(seconds: session.nextWorkSeconds))"
+                 : "Jetzt erledigen")
+                .font(.caption).foregroundStyle(.orange)
         }
 
         VStack(alignment: .leading, spacing: 2) {
-            Text("Fällig um \(Format.dayTime(session.nextDue, relativeTo: now))")
+            Text("\(isDue ? "Fällig seit" : "Fällig um") \(Format.dayTime(session.nextDue, relativeTo: now))")
             HStack(spacing: 4) {
-                Text("Fertig ca. \(Format.dayTime(session.finishAt, relativeTo: now))")
-                if abs(session.finishDeviation) >= 60 {
-                    Text("(\(Format.signedMinutes(session.finishDeviation)))")
+                Text("Fertig ca. \(Format.dayTime(finish, relativeTo: now))")
+                if abs(deviation) >= 60 {
+                    Text("(\(Format.signedMinutes(deviation)))")
                         .foregroundStyle(.orange)
                 }
             }
@@ -171,35 +182,14 @@ private struct StatusCard: View {
     }
 }
 
-// MARK: - Delay banner
-
-private struct DelayBanner: View {
-    @Environment(AppModel.self) private var model
-    let delta: TimeInterval
-
-    var body: some View {
-        VStack(alignment: .leading, spacing: 8) {
-            Label(delta > 0
-                  ? "Du bist \(Format.duration(seconds: delta)) später dran als geplant."
-                  : "Du bist \(Format.duration(seconds: delta)) früher dran als geplant.",
-                  systemImage: delta > 0 ? "tortoise" : "hare")
-                .font(.subheadline)
-            Button("Plan \(Format.signedMinutes(delta)) verschieben") {
-                model.mutate { $0.shift(by: delta, intentional: false) }
-            }
-            .buttonStyle(.bordered)
-            .tint(.orange)
-        }
-        .padding(.vertical, 4)
-    }
-}
-
 // MARK: - Step rows
 
 private struct SessionStepRow: View {
     @Environment(AppModel.self) private var model
     let session: BakeSession
     let index: Int
+    /// Planned / expected start of this step.
+    let start: Date
     let now: Date
 
     var body: some View {
@@ -219,22 +209,17 @@ private struct SessionStepRow: View {
                         .font(isNext ? .body.bold() : .body)
                         .strikethrough(state.isDone)
                         .foregroundStyle(state.isDone ? .secondary : .primary)
-                    if step.waitMinutes > 0 {
-                        Text("danach \(Format.duration(minutes: step.waitMinutes))")
-                            .font(.caption).foregroundStyle(.secondary)
+                    if let detail = detail(step) {
+                        Text(detail).font(.caption).foregroundStyle(.secondary)
                     }
                 }
                 Spacer()
                 VStack(alignment: .trailing, spacing: 2) {
                     if let done = state.completedAt {
                         Text(Format.time(done))
-                        let diff = done.timeIntervalSince(state.dueAt)
-                        if abs(diff) >= 60 {
-                            Text(Format.signedMinutes(diff)).font(.caption)
-                                .foregroundStyle(diff > 0 ? .orange : .secondary)
-                        }
                     } else {
-                        Text(Format.dayTime(state.dueAt, relativeTo: now))
+                        // Only the next step has a fixed time, later ones are a forecast.
+                        Text((isNext ? "" : "~") + Format.dayTime(start, relativeTo: now))
                     }
                 }
                 .monospacedDigit()
@@ -244,16 +229,24 @@ private struct SessionStepRow: View {
         }
         .buttonStyle(.plain)
     }
+
+    private func detail(_ step: RecipeStep) -> String? {
+        var parts: [String] = []
+        if step.workMinutes > 0 { parts.append("ca. \(Format.duration(minutes: step.workMinutes))") }
+        if step.waitMinutes > 0 { parts.append("danach \(Format.duration(minutes: step.waitMinutes))") }
+        return parts.isEmpty ? nil : parts.joined(separator: " · ")
+    }
 }
 
 private struct FinishRow: View {
-    let session: BakeSession
+    let finish: Date
+    let now: Date
 
     var body: some View {
         HStack {
             Label("Fertig", systemImage: "flag.checkered").font(.headline)
             Spacer()
-            Text(Format.dayTime(session.finishAt)).font(.headline).monospacedDigit()
+            Text(Format.dayTime(finish, relativeTo: now)).font(.headline).monospacedDigit()
         }
     }
 }

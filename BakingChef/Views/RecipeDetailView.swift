@@ -63,8 +63,7 @@ struct RecipeDetailView: View {
     }
 
     private func startTime(of index: Int, from start: Date) -> Date {
-        let minutes = recipe.steps.prefix(index).reduce(0) { $0 + $1.waitMinutes }
-        return start.addingTimeInterval(TimeInterval(minutes * 60))
+        start.addingTimeInterval(TimeInterval(recipe.offsetMinutes(of: index) * 60))
     }
 }
 
@@ -78,11 +77,16 @@ private struct RecipeStepRow: View {
             VStack(alignment: .leading, spacing: 4) {
                 Text(step.title).font(.body.weight(.medium))
                 IngredientList(ingredients: step.ingredients, multiplier: multiplier)
-                if step.waitMinutes > 0 {
-                    Label("danach \(Format.duration(minutes: step.waitMinutes))", systemImage: "hourglass")
-                        .font(.caption)
-                        .foregroundStyle(.secondary)
+                HStack(spacing: 12) {
+                    if step.workMinutes > 0 {
+                        Label("ca. \(Format.duration(minutes: step.workMinutes))", systemImage: "hands.sparkles")
+                    }
+                    if step.waitMinutes > 0 {
+                        Label("danach \(Format.duration(minutes: step.waitMinutes))", systemImage: "hourglass")
+                    }
                 }
+                .font(.caption)
+                .foregroundStyle(.secondary)
             }
             Spacer()
             if let time {

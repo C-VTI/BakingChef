@@ -16,7 +16,7 @@ extension BakeActivityAttributes.ContentState {
                   dueAt: session.nextDue,
                   updatedAt: now,
                   pausedAt: session.pausedAt,
-                  finishAt: session.finishAt)
+                  finishAt: session.finish(at: now))
     }
 }
 

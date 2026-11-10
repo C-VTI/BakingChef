@@ -99,26 +99,30 @@ struct RecipeStep: Codable, Hashable {
     var title: String
     var note: String?
     var ingredients: [Ingredient]
-    /// Waiting time after this step until the next step (or until done).
+    /// Expected time to do the step itself (mixing, folding, …). Only used for the forecast.
+    var workMinutes: Int
+    /// Waiting time after this step is checked off until the next step (or until done).
     var waitMinutes: Int
     var reminder: StepReminder?
 
     init(title: String, note: String? = nil, ingredients: [Ingredient] = [],
-         waitMinutes: Int = 0, reminder: StepReminder? = nil) {
+         workMinutes: Int = 0, waitMinutes: Int = 0, reminder: StepReminder? = nil) {
         self.title = title
         self.note = note
         self.ingredients = ingredients
+        self.workMinutes = workMinutes
         self.waitMinutes = waitMinutes
         self.reminder = reminder
     }
 
-    enum CodingKeys: String, CodingKey { case title, note, ingredients, wait, reminder }
+    enum CodingKeys: String, CodingKey { case title, note, ingredients, work, wait, reminder }
 
     init(from decoder: Decoder) throws {
         let c = try decoder.container(keyedBy: CodingKeys.self)
         title = try c.decode(String.self, forKey: .title)
         note = try c.decodeIfPresent(String.self, forKey: .note)
         ingredients = try c.decodeIfPresent([Ingredient].self, forKey: .ingredients) ?? []
+        workMinutes = try DurationCoding.decode(c, .work) ?? 0
         waitMinutes = try DurationCoding.decode(c, .wait) ?? 0
         reminder = try c.decodeIfPresent(StepReminder.self, forKey: .reminder)
     }
@@ -128,6 +132,7 @@ struct RecipeStep: Codable, Hashable {
         try c.encode(title, forKey: .title)
         try c.encodeIfPresent(note, forKey: .note)
         if !ingredients.isEmpty { try c.encode(ingredients, forKey: .ingredients) }
+        if workMinutes > 0 { try c.encode(DurationCoding.string(workMinutes), forKey: .work) }
         if waitMinutes > 0 { try c.encode(DurationCoding.string(waitMinutes), forKey: .wait) }
         try c.encodeIfPresent(reminder, forKey: .reminder)
     }
@@ -165,9 +170,15 @@ struct Recipe: Codable, Hashable, Identifiable {
         }
     }
 
-    var totalMinutes: Int { steps.reduce(0) { $0 + $1.waitMinutes } }
+    /// Expected total duration: work + waiting time of all steps.
+    var totalMinutes: Int { offsetMinutes(of: steps.count) }
     /// Recipes without any waiting time (e.g. "Anstellgut auffrischen") have no timetable.
-    var isScheduled: Bool { totalMinutes > 0 }
+    var isScheduled: Bool { steps.contains { $0.waitMinutes > 0 } }
+
+    /// Expected minutes from the start until step `index` begins (`steps.count` = done).
+    func offsetMinutes(of index: Int) -> Int {
+        steps.prefix(index).reduce(0) { $0 + $1.workMinutes + $1.waitMinutes }
+    }
 
     static func slug(_ text: String) -> String {
         let folded = text.folding(options: [.diacriticInsensitive, .caseInsensitive], locale: nil).lowercased()

@@ -1,39 +1,91 @@
 {
   "id": "sauerteig-brot",
   "name": "Sauerteig Brot",
-  "description": "Die Zeit hinter jedem Schritt ist die Wartezeit bis zum nächsten Schritt bzw. bis das Brot fertig ist.",
+  "description": "Die Wartezeit läuft ab „Erledigt“ bis zum nächsten Schritt bzw. bis das Brot fertig ist. Die Bearbeitungsdauer (ca.) dient nur der Prognose.",
   "steps": [
     {
       "title": "Sauerteig ansetzen",
       "ingredients": [
-        { "name": "Starter", "amount": 40, "unit": "g" },
-        { "name": "Wasser", "amount": 30, "unit": "g" },
-        { "name": "Mehl", "amount": 30, "unit": "g" }
+        {
+          "name": "Starter",
+          "amount": 40,
+          "unit": "g"
+        },
+        {
+          "name": "Wasser",
+          "amount": 30,
+          "unit": "g"
+        },
+        {
+          "name": "Mehl",
+          "amount": 30,
+          "unit": "g"
+        }
       ],
+      "work": "00:05",
       "wait": "04:00"
     },
     {
       "title": "Zutaten mischen",
       "ingredients": [
-        { "name": "Wasser", "amount": 400, "amountMax": 450, "unit": "g" },
-        { "name": "Salz", "amount": 10, "unit": "g" },
-        { "name": "Mehl", "amount": 500, "unit": "g" }
+        {
+          "name": "Wasser",
+          "amount": 400,
+          "amountMax": 450,
+          "unit": "g"
+        },
+        {
+          "name": "Salz",
+          "amount": 10,
+          "unit": "g"
+        },
+        {
+          "name": "Mehl",
+          "amount": 500,
+          "unit": "g"
+        }
       ],
+      "work": "00:10",
       "wait": "01:30"
     },
-    { "title": "Dehnen & Falten I", "wait": "00:30" },
-    { "title": "Dehnen & Falten II", "wait": "00:30" },
-    { "title": "Dehnen & Falten III", "wait": "01:00" },
-    { "title": "Vorformen & Stockgare", "wait": "00:15" },
+    {
+      "title": "Dehnen & Falten I",
+      "work": "00:05",
+      "wait": "00:30"
+    },
+    {
+      "title": "Dehnen & Falten II",
+      "work": "00:05",
+      "wait": "00:30"
+    },
+    {
+      "title": "Dehnen & Falten III",
+      "work": "00:05",
+      "wait": "01:00"
+    },
+    {
+      "title": "Vorformen & Stockgare",
+      "work": "00:05",
+      "wait": "00:15"
+    },
     {
       "title": "Stückgare",
+      "work": "00:05",
       "wait": "02:00"
     },
     {
       "title": "Backen 240° mit Deckel",
-      "reminder": { "before": "00:45", "text": "Ofen mit Topf auf 240° vorheizen" },
+      "reminder": {
+        "before": "00:45",
+        "text": "Ofen mit Topf auf 240° vorheizen"
+      },
+      "work": "00:01",
       "wait": "00:20"
     },
-    { "title": "Backen 230° ohne Deckel", "wait": "00:20" }
+    {
+      "title": "Backen 230° ohne Deckel",
+      "work": "00:01",
+      "wait": "00:17"
+    }
   ]
 }
