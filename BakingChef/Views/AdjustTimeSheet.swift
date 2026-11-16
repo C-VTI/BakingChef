@@ -2,17 +2,23 @@ import SwiftUI
 import UIKit
 
 /// Change the timetable with an iOS timer wheel:
-/// - "Restzeit": set the countdown to the next step directly
-/// - "Verschieben": move all open steps later/earlier by a duration
+/// - "Set remaining time": set the countdown to the next step directly
+/// - "Shift": move all open steps later/earlier by a duration
 struct AdjustTimeSheet: View {
     @Environment(AppModel.self) private var model
     @Environment(\.dismiss) private var dismiss
     let session: BakeSession
 
-    private enum Mode: String, CaseIterable, Identifiable {
-        case remaining = "Restzeit setzen"
-        case shift = "Verschieben"
+    private enum Mode: CaseIterable, Identifiable {
+        case remaining, shift
         var id: Self { self }
+
+        var title: LocalizedStringKey {
+            switch self {
+            case .remaining: "Set remaining time"
+            case .shift: "Shift"
+            }
+        }
     }
 
     @State private var mode: Mode = .remaining
@@ -27,15 +33,15 @@ struct AdjustTimeSheet: View {
     var body: some View {
         NavigationStack {
             VStack(spacing: 16) {
-                Picker("Modus", selection: $mode) {
-                    ForEach(Mode.allCases) { Text($0.rawValue).tag($0) }
+                Picker("Mode", selection: $mode) {
+                    ForEach(Mode.allCases) { Text($0.title).tag($0) }
                 }
                 .pickerStyle(.segmented)
 
                 if mode == .shift {
-                    Picker("Richtung", selection: $later) {
-                        Text("Später").tag(true)
-                        Text("Früher").tag(false)
+                    Picker("Direction", selection: $later) {
+                        Text("Later").tag(true)
+                        Text("Earlier").tag(false)
                     }
                     .pickerStyle(.segmented)
                 }
@@ -54,7 +60,7 @@ struct AdjustTimeSheet: View {
 
                 VStack(spacing: 2) {
                     Text("\(session.nextTitle): \(Format.dayTime(session.nextDue.addingTimeInterval(delta)))")
-                    Text("Fertig ca. \(Format.dayTime(session.finish(at: .now).addingTimeInterval(delta)))")
+                    Text("Ready approx. \(Format.dayTime(session.finish(at: .now).addingTimeInterval(delta)))")
                 }
                 .font(.subheadline)
                 .foregroundStyle(.secondary)
@@ -63,14 +69,14 @@ struct AdjustTimeSheet: View {
                 Spacer(minLength: 0)
             }
             .padding()
-            .navigationTitle(mode == .remaining ? "Nächster Schritt in" : "Plan verschieben")
+            .navigationTitle(mode == .remaining ? Text("Next step in") : Text("Shift plan"))
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
-                    Button("Abbrechen") { dismiss() }
+                    Button("Cancel") { dismiss() }
                 }
                 ToolbarItem(placement: .confirmationAction) {
-                    Button("Übernehmen") {
+                    Button("Apply") {
                         let d = delta
                         model.apply(.shift(seconds: d))
                         dismiss()

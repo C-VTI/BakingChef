@@ -1,13 +1,40 @@
 {
   "id": "anstellgut-auffrischen",
-  "name": "Anstellgut auffrischen",
+  "name": {
+    "en": "Feed the starter",
+    "de": "Anstellgut auffrischen"
+  },
   "steps": [
     {
-      "title": "Anstellgut auffrischen",
+      "title": {
+        "en": "Feed the starter",
+        "de": "Anstellgut auffrischen"
+      },
       "ingredients": [
-        { "name": "Anstellgut", "amount": 50, "unit": "g" },
-        { "name": "Wasser", "amount": 130, "unit": "g" },
-        { "name": "Mehl", "amount": 100, "unit": "g" }
+        {
+          "name": {
+            "en": "Starter",
+            "de": "Anstellgut"
+          },
+          "amount": 50,
+          "unit": "g"
+        },
+        {
+          "name": {
+            "en": "Water",
+            "de": "Wasser"
+          },
+          "amount": 130,
+          "unit": "g"
+        },
+        {
+          "name": {
+            "en": "Flour",
+            "de": "Mehl"
+          },
+          "amount": 100,
+          "unit": "g"
+        }
       ]
     }
   ]

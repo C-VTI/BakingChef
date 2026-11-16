@@ -16,7 +16,7 @@ struct RecipeDetailView: View {
                 Section {
                     Stepper(value: $multiplier, in: 0.5...5, step: 0.5) {
                         HStack {
-                            Label("Menge", systemImage: "scalemass")
+                            Label("Quantity", systemImage: "scalemass")
                             Spacer()
                             Text(Format.multiplier(multiplier))
                                 .font(.title3.bold())
@@ -25,14 +25,14 @@ struct RecipeDetailView: View {
                     }
                 }
 
-                Section(recipe.isScheduled ? "Zeitplan bei Start jetzt" : "Zutaten") {
+                Section(recipe.isScheduled ? "Schedule if started now" : "Ingredients") {
                     ForEach(Array(recipe.steps.enumerated()), id: \.offset) { i, step in
                         RecipeStepRow(step: step, multiplier: multiplier,
                                       time: recipe.isScheduled ? startTime(of: i, from: start) : nil)
                     }
                     if recipe.isScheduled {
                         HStack {
-                            Label("Fertig", systemImage: "flag.checkered")
+                            Label("Ready", systemImage: "flag.checkered")
                                 .font(.headline)
                             Spacer()
                             Text(Format.dayTime(start.addingTimeInterval(TimeInterval(recipe.totalMinutes * 60)),
@@ -50,7 +50,7 @@ struct RecipeDetailView: View {
                 Button {
                     model.start(recipe, multiplier: multiplier)
                 } label: {
-                    Label("Jetzt starten", systemImage: "play.fill")
+                    Label("Start now", systemImage: "play.fill")
                         .font(.headline)
                         .frame(maxWidth: .infinity)
                 }
@@ -79,10 +79,10 @@ private struct RecipeStepRow: View {
                 IngredientList(ingredients: step.ingredients, multiplier: multiplier)
                 HStack(spacing: 12) {
                     if step.workMinutes > 0 {
-                        Label("ca. \(Format.duration(minutes: step.workMinutes))", systemImage: "hands.sparkles")
+                        Label("approx. \(Format.duration(minutes: step.workMinutes))", systemImage: "hands.sparkles")
                     }
                     if step.waitMinutes > 0 {
-                        Label("danach \(Format.duration(minutes: step.waitMinutes))", systemImage: "hourglass")
+                        Label("then \(Format.duration(minutes: step.waitMinutes))", systemImage: "hourglass")
                     }
                 }
                 .font(.caption)

@@ -11,7 +11,7 @@ final class NotificationManager: NSObject, UNUserNotificationCenterDelegate {
 
     func configure() {
         center.delegate = self
-        let complete = UNNotificationAction(identifier: Self.completeAction, title: "Erledigt ✓", options: [])
+        let complete = UNNotificationAction(identifier: Self.completeAction, title: String(localized: "Done ✓"), options: [])
         center.setNotificationCategories([
             UNNotificationCategory(identifier: Self.stepCategory, actions: [complete], intentIdentifiers: [])
         ])
@@ -53,7 +53,7 @@ final class NotificationManager: NSObject, UNUserNotificationCenterDelegate {
         completionHandler([.banner, .list, .sound])
     }
 
-    // "Erledigt ✓" pressed on a notification (works without opening the app).
+    // "Done ✓" pressed on a notification (works without opening the app).
     func userNotificationCenter(_ center: UNUserNotificationCenter,
                                 didReceive response: UNNotificationResponse,
                                 withCompletionHandler completionHandler: @escaping () -> Void) {

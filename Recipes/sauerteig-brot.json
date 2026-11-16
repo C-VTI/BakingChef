@@ -1,23 +1,41 @@
 {
   "id": "sauerteig-brot",
-  "name": "Sauerteig Brot",
-  "description": "Die Wartezeit läuft ab „Erledigt“ bis zum nächsten Schritt bzw. bis das Brot fertig ist. Die Bearbeitungsdauer (ca.) dient nur der Prognose.",
+  "name": {
+    "en": "Sourdough Bread",
+    "de": "Sauerteig Brot"
+  },
+  "description": {
+    "en": "The waiting time runs from “Done” until the next step or until the bread is ready. The work time (approx.) is only used for the forecast.",
+    "de": "Die Wartezeit läuft ab „Erledigt“ bis zum nächsten Schritt bzw. bis das Brot fertig ist. Die Bearbeitungsdauer (ca.) dient nur der Prognose."
+  },
   "steps": [
     {
-      "title": "Sauerteig ansetzen",
+      "title": {
+        "en": "Build the levain",
+        "de": "Sauerteig ansetzen"
+      },
       "ingredients": [
         {
-          "name": "Starter",
+          "name": {
+            "en": "Starter",
+            "de": "Starter"
+          },
           "amount": 40,
           "unit": "g"
         },
         {
-          "name": "Wasser",
+          "name": {
+            "en": "Water",
+            "de": "Wasser"
+          },
           "amount": 30,
           "unit": "g"
         },
         {
-          "name": "Mehl",
+          "name": {
+            "en": "Flour",
+            "de": "Mehl"
+          },
           "amount": 30,
           "unit": "g"
         }
@@ -26,21 +44,33 @@
       "wait": "04:00"
     },
     {
-      "title": "Zutaten mischen",
+      "title": {
+        "en": "Mix ingredients",
+        "de": "Zutaten mischen"
+      },
       "ingredients": [
         {
-          "name": "Wasser",
+          "name": {
+            "en": "Water",
+            "de": "Wasser"
+          },
           "amount": 400,
           "amountMax": 450,
           "unit": "g"
         },
         {
-          "name": "Salz",
+          "name": {
+            "en": "Salt",
+            "de": "Salz"
+          },
           "amount": 10,
           "unit": "g"
         },
         {
-          "name": "Mehl",
+          "name": {
+            "en": "Flour",
+            "de": "Mehl"
+          },
           "amount": 500,
           "unit": "g"
         }
@@ -49,41 +79,65 @@
       "wait": "01:30"
     },
     {
-      "title": "Dehnen & Falten I",
+      "title": {
+        "en": "Stretch & fold I",
+        "de": "Dehnen & Falten I"
+      },
       "work": "00:05",
       "wait": "00:30"
     },
     {
-      "title": "Dehnen & Falten II",
+      "title": {
+        "en": "Stretch & fold II",
+        "de": "Dehnen & Falten II"
+      },
       "work": "00:05",
       "wait": "00:30"
     },
     {
-      "title": "Dehnen & Falten III",
+      "title": {
+        "en": "Stretch & fold III",
+        "de": "Dehnen & Falten III"
+      },
       "work": "00:05",
       "wait": "01:00"
     },
     {
-      "title": "Vorformen & Stockgare",
+      "title": {
+        "en": "Pre-shape & bench rest",
+        "de": "Vorformen & Stockgare"
+      },
       "work": "00:05",
       "wait": "00:15"
     },
     {
-      "title": "Stückgare",
+      "title": {
+        "en": "Final proof",
+        "de": "Stückgare"
+      },
       "work": "00:05",
       "wait": "02:00"
     },
     {
-      "title": "Backen 240° mit Deckel",
+      "title": {
+        "en": "Bake at 240° with lid",
+        "de": "Backen 240° mit Deckel"
+      },
       "reminder": {
         "before": "00:45",
-        "text": "Ofen mit Topf auf 240° vorheizen"
+        "text": {
+          "en": "Preheat oven with pot to 240°",
+          "de": "Ofen mit Topf auf 240° vorheizen"
+        }
       },
       "work": "00:01",
       "wait": "00:20"
     },
     {
-      "title": "Backen 230° ohne Deckel",
+      "title": {
+        "en": "Bake at 230° without lid",
+        "de": "Backen 230° ohne Deckel"
+      },
       "work": "00:01",
       "wait": "00:17"
     }

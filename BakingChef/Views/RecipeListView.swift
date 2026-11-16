@@ -16,20 +16,20 @@ struct RecipeListView: View {
                     for i in offsets { model.deleteImported(model.recipes[i]) }
                 }
             } footer: {
-                Text("Eigene Rezepte als JSON-Datei über „Importieren“ hinzufügen. Importierte Rezepte lassen sich mit Wischen löschen.")
+                Text("Add your own recipes as JSON files via “Import”. Imported recipes can be deleted by swiping.")
             }
         }
-        .navigationTitle("Rezepte")
+        .navigationTitle("Recipes")
         .toolbar {
             ToolbarItem(placement: .primaryAction) {
                 Button { showImporter = true } label: {
-                    Label("Importieren", systemImage: "square.and.arrow.down")
+                    Label("Import", systemImage: "square.and.arrow.down")
                 }
             }
         }
         .fileImporter(isPresented: $showImporter, allowedContentTypes: [.json],
                       allowsMultipleSelection: true) { model.importRecipes(from: $0) }
-        .alert("Import fehlgeschlagen",
+        .alert("Import failed",
                isPresented: Binding(get: { model.importError != nil },
                                     set: { if !$0 { model.importError = nil } })) {
             Button("OK", role: .cancel) {}
@@ -47,10 +47,10 @@ private struct RecipeRow: View {
             Text(recipe.name).font(.headline)
             Group {
                 if recipe.isScheduled {
-                    Label("\(recipe.steps.count) Schritte · \(Format.duration(minutes: recipe.totalMinutes))",
+                    Label("\(recipe.steps.count) steps · \(Format.duration(minutes: recipe.totalMinutes))",
                           systemImage: "clock")
                 } else {
-                    Label("Ohne Zeitplan", systemImage: "list.bullet")
+                    Label("No schedule", systemImage: "list.bullet")
                 }
             }
             .font(.subheadline)

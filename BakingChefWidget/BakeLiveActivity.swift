@@ -33,7 +33,7 @@ struct BakeLiveActivity: Widget {
                         Text(context.state.title).font(.headline).lineLimit(1)
                         Spacer()
                         HStack(spacing: 4) {
-                            Text("Fertig")
+                            Text("Ready")
                             Text(context.state.finishAt, style: .time)
                         }
                     }
@@ -72,7 +72,7 @@ private struct LockScreenView: View {
 
             HStack(alignment: .center) {
                 VStack(alignment: .leading, spacing: 2) {
-                    Text(state.pausedAt == nil ? "Nächster Schritt" : "Danach")
+                    Text(state.pausedAt == nil ? "Next step" : "Then")
                         .font(.caption2)
                         .foregroundStyle(.secondary)
                     Text(state.title)
@@ -90,7 +90,7 @@ private struct LockScreenView: View {
             if state.pausedAt == nil {
                 HStack(spacing: 4) {
                     Image(systemName: "flag.checkered")
-                    Text("Fertig ca.")
+                    Text("Ready approx.")
                     Text(state.finishAt, style: .time)
                 }
                 .font(.caption)
@@ -113,7 +113,7 @@ private struct CountdownText: View {
                 .foregroundStyle(.blue)
         } else if isStale || state.dueAt <= state.updatedAt {
             // `.timer` counts up for dates in the past.
-            (Text("+") + Text(state.dueAt, style: .timer))
+            (Text(verbatim: "+") + Text(state.dueAt, style: .timer))
                 .foregroundStyle(.red)
         } else {
             Text(timerInterval: state.updatedAt...state.dueAt, countsDown: true)

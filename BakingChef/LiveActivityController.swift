@@ -6,11 +6,11 @@ extension BakeActivityAttributes.ContentState {
     init(session: BakeSession, now: Date = .now) {
         let detail: String
         if session.isPaused {
-            detail = "Im Kühlschrank"
+            detail = String(localized: "In the fridge")
         } else if let i = session.nextIndex {
-            detail = "Schritt \(i + 1)/\(session.steps.count)"
+            detail = String(localized: "Step \(i + 1)/\(session.steps.count)")
         } else {
-            detail = "Im Ofen"
+            detail = String(localized: "In the oven")
         }
         self.init(title: session.nextTitle,
                   detail: detail,
@@ -25,7 +25,7 @@ extension BakeActivityAttributes.ContentState {
 ///
 /// Updates are applied strictly in order (one after the other) and are protected by a
 /// background task, so changes made while the app only runs briefly in the background
-/// (Watch, "Erledigt" on a notification) still reach the lock screen.
+/// (Watch, "Done" on a notification) still reach the lock screen.
 @MainActor
 final class LiveActivityController {
     private var queue: Task<Void, Never>?

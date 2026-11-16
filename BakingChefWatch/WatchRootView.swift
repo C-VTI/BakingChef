@@ -8,9 +8,9 @@ struct WatchRootView: View {
             if let session = model.session {
                 WatchSessionView(session: session)
             } else {
-                ContentUnavailableView("Kein Backvorgang",
+                ContentUnavailableView("No bake running",
                                        systemImage: "timer",
-                                       description: Text("Starte ein Rezept auf dem iPhone."))
+                                       description: Text("Start a recipe on your iPhone."))
             }
         }
     }
@@ -24,7 +24,7 @@ private struct WatchSessionView: View {
         List {
             Section {
                 VStack(alignment: .leading, spacing: 4) {
-                    Text(session.isPaused ? "Pausiert" : (session.nextIndex.map { "Schritt \($0 + 1)/\(session.steps.count)" } ?? "Im Ofen"))
+                    Text(status)
                         .font(.caption2)
                         .foregroundStyle(session.isPaused ? .blue : .secondary)
                     Text(session.nextTitle)
@@ -43,12 +43,12 @@ private struct WatchSessionView: View {
 
             Section {
                 if session.isPaused {
-                    Button { model.send(.resume) } label: { Label("Weiter", systemImage: "play.fill") }
+                    Button { model.send(.resume) } label: { Label("Resume", systemImage: "play.fill") }
                         .tint(.orange)
                 } else {
                     if let next = session.nextIndex {
                         Button { model.send(.complete(step: next)) } label: {
-                            Label("Erledigt", systemImage: "checkmark")
+                            Label("Done", systemImage: "checkmark")
                         }
                         .tint(.green)
                     }
@@ -59,7 +59,7 @@ private struct WatchSessionView: View {
                 }
             }
 
-            Section("Schritte") {
+            Section("Steps") {
                 let schedule = session.schedule(at: .now)
                 ForEach(session.steps.indices, id: \.self) { i in
                     HStack {
@@ -74,10 +74,16 @@ private struct WatchSessionView: View {
                 }
                 HStack {
                     Image(systemName: "flag.checkered")
-                    Text("Fertig ca. \(Format.time(schedule.finish))").font(.footnote)
+                    Text("Ready approx. \(Format.time(schedule.finish))").font(.footnote)
                 }
             }
         }
         .navigationTitle(session.recipe.name)
+    }
+
+    private var status: String {
+        if session.isPaused { return String(localized: "Paused") }
+        if let i = session.nextIndex { return String(localized: "Step \(i + 1)/\(session.steps.count)") }
+        return String(localized: "In the oven")
     }
 }

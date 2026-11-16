@@ -2,7 +2,7 @@
 
 Back-Zeitplan als abhakbare Taskliste mit Erinnerungen – für iPhone und Apple Watch.
 
-- **Rezepte** als JSON (eingebaut: *Sauerteig Brot*, *Anstellgut auffrischen*), eigene per „Importieren“
+- **Rezepte** als JSON (eingebaut: *Sauerteig Brot*, *Anstellgut auffrischen* – jeweils Englisch + Deutsch), eigene per „Importieren“
 - **Menge** mit Multiplikator (0.5er-Schritte)
 - **Start jetzt** → Zeitplan wird vorwärts berechnet (Bearbeitungsdauer + Wartezeit pro Schritt)
 - **Wartezeit startet mit „Erledigt“**: der nächste Schritt ist fällig um „erledigt + Wartezeit“. Spätere Schritte und „Fertig ca.“ sind eine Prognose, die sich automatisch nachführt, wenn ein Schritt länger dauert
@@ -12,6 +12,7 @@ Back-Zeitplan als abhakbare Taskliste mit Erinnerungen – für iPhone und Apple
 - **Zeit anpassen** mit dem iOS-Timer-Scrollrad: Restzeit direkt setzen oder Plan später/früher verschieben (auch: Tipp auf den Countdown)
 - **Live Activity**: Countdown auf dem Sperrbildschirm / in der Dynamic Island
 - **Apple Watch**: Countdown, Erledigt, +5 min, Pause. Benachrichtigungen kommen auf die Uhr, wenn das iPhone gesperrt ist
+- **Sprachen**: Englisch (Standard) und Deutsch – App, Watch, Live Activity, Benachrichtigungen und Rezepte folgen der Gerätesprache (bzw. der App-Sprache unter *Einstellungen → BakingChef → Sprache*)
 
 ## Einrichten (gratis Apple-ID)
 
@@ -50,7 +51,7 @@ cp BakingChef/Assets.xcassets/AppIcon.appiconset/AppIcon.png BakingChefWatch/Ass
 ```json
 {
   "id": "sauerteig-brot",
-  "name": "Sauerteig Brot",
+  "name": { "en": "Sourdough Bread", "de": "Sauerteig Brot" },
   "description": "optional",
   "steps": [
     {
@@ -83,6 +84,12 @@ cp BakingChef/Assets.xcassets/AppIcon.appiconset/AppIcon.png BakingChefWatch/Ass
 | `steps[].note` | nein | Notiz (erscheint in der Benachrichtigung, wenn keine Zutaten) |
 | `steps[].reminder` | nein | Zusätzliche Erinnerung `before` (`"HH:MM"`) vor dem Schritt |
 
+**Mehrsprachig:** Jedes Textfeld (`name`, `description`, `title`, `note`, `reminder.text`, `ingredients[].name`, `unit`)
+ist entweder ein einfacher String (gilt für alle Sprachen) oder ein Objekt mit Sprachcodes, z. B.
+`{ "en": "Mix ingredients", "de": "Zutaten mischen" }`. Angezeigt wird die Sprache der App, sonst Englisch,
+sonst die erste vorhandene. Beides lässt sich im selben Rezept mischen. Fehlt die `id`, wird sie aus dem
+englischen Namen gebildet.
+
 Eine Datei darf ein Rezept, ein Array von Rezepten oder `{ "recipes": [...] }` enthalten.
 Import: JSON-Datei in iCloud Drive / „Auf meinem iPhone“ ablegen (oder per AirDrop) → in der App **Importieren**.
 
@@ -93,6 +100,7 @@ Import: JSON-Datei in iCloud Drive / „Auf meinem iPhone“ ablegen (oder per A
 | `Shared/Core` | Rezept-Modell, Zeitplan-Logik (`BakeSession`), Sync – plattformunabhängig |
 | `Shared/UI` | Countdown-View (iPhone + Watch) |
 | `Shared/LiveActivity` | Daten der Live Activity |
+| `Shared/Resources` | `Localizable.xcstrings`: UI-Texte (Englisch als Quelle, deutsche Übersetzung) für alle Targets |
 | `BakingChef` | iPhone-App (Views, Benachrichtigungen, Live Activity, Watch-Sync) |
 | `BakingChefWidget` | Live Activity / Dynamic Island |
 | `BakingChefWatch` | Watch-App |

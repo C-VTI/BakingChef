@@ -89,7 +89,7 @@ struct BakeSession: Codable, Hashable, Identifiable {
         let s = schedule(at: clock(.now))
         return nextIndex.map { s.starts[$0] } ?? s.finish
     }
-    var nextTitle: String { nextIndex.map { recipe.steps[$0].title } ?? "Fertig" }
+    var nextTitle: String { nextIndex.map { recipe.steps[$0].title } ?? String(localized: "Ready") }
     /// Expected work time of the next step (0 when in the oven).
     var nextWorkSeconds: TimeInterval {
         nextIndex.map { TimeInterval(recipe.steps[$0].workMinutes * 60) } ?? 0
@@ -159,7 +159,7 @@ struct BakeSession: Codable, Hashable, Identifiable {
         var date: Date
         var title: String
         var body: String
-        /// Set for "step is due" notifications (they get an "Erledigt" action).
+        /// Set for "step is due" notifications (they get a "Done" action).
         var stepIndex: Int?
     }
 
@@ -185,29 +185,29 @@ struct BakeSession: Codable, Hashable, Identifiable {
         for (i, state) in steps.enumerated() where !state.isDone {
             let step = recipe.steps[i]
             let due = starts[i]
-            let position = "Schritt \(i + 1) von \(count)"
+            let position = String(localized: "Step \(i + 1) of \(count)")
 
             if let r = step.reminder, r.minutesBefore > 0 {
                 let at = due.addingTimeInterval(-TimeInterval(r.minutesBefore * 60))
                 if at > now {
                     out.append(.init(id: ids(i, "reminder"), date: at,
                                      title: r.text,
-                                     body: "In ca. \(Format.duration(minutes: r.minutesBefore)): \(step.title)"))
+                                     body: String(localized: "In approx. \(Format.duration(minutes: r.minutesBefore)): \(step.title)")))
                 }
             }
             guard i == next else { continue }
             let pre = due.addingTimeInterval(-Self.preWarning)
             if pre > now {
                 out.append(.init(id: ids(i, "pre"), date: pre,
-                                 title: "In 5 min: \(step.title)",
-                                 body: "Um \(Format.time(due)) · \(position)"))
+                                 title: String(localized: "In 5 min: \(step.title)"),
+                                 body: String(localized: "At \(Format.time(due)) · \(position)")))
             }
             if due > now {
                 let details = step.ingredients.isEmpty
                     ? (step.note ?? position)
                     : step.ingredientsText(multiplier: multiplier)
                 out.append(.init(id: ids(i, "due"), date: due,
-                                 title: "Jetzt: \(step.title)",
+                                 title: String(localized: "Now: \(step.title)"),
                                  body: details, stepIndex: i))
             }
         }
@@ -216,13 +216,13 @@ struct BakeSession: Codable, Hashable, Identifiable {
         let preFinish = finish.addingTimeInterval(-Self.preWarning)
         if preFinish > now {
             out.append(.init(id: ids(count, "pre"), date: preFinish,
-                             title: "In 5 min fertig",
-                             body: "\(recipe.name) – um \(Format.time(finish))"))
+                             title: String(localized: "Ready in 5 min"),
+                             body: String(localized: "\(recipe.name) – at \(Format.time(finish))")))
         }
         if finish > now {
             out.append(.init(id: ids(count, "due"), date: finish,
-                             title: "Fertig! 🍞",
-                             body: "\(recipe.name) ist fertig."))
+                             title: String(localized: "Ready! 🍞"),
+                             body: String(localized: "\(recipe.name) is ready.")))
         }
         return out
     }

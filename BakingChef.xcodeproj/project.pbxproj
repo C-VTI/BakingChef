@@ -13,6 +13,7 @@
 		11D3B52BFF79719983F91280 /* SessionCountdown.swift in Sources */ = {isa = PBXBuildFile; fileRef = 329DE0746DD31E9E9A53378D /* SessionCountdown.swift */; };
 		2855379C604172E32A0410E2 /* RecipeStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E59B6FC0A492F99361AB334 /* RecipeStore.swift */; };
 		2991CB1B44989FEDA8288252 /* Recipe.swift in Sources */ = {isa = PBXBuildFile; fileRef = D61A8CAFDFF31A00E7027B3A /* Recipe.swift */; };
+		328A863FD15B6452837209E6 /* LocalizedText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D1FA66BDA7CB69759ABBA90 /* LocalizedText.swift */; };
 		3AC1EF4A94F0AFE56162F03D /* BakeSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 159638E8EC3904BDAA07B272 /* BakeSession.swift */; };
 		3B3D3D4D5FFCFC7BDD86535F /* BakeActivityAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F2E9771A954F23168D4DB44 /* BakeActivityAttributes.swift */; };
 		48008075AFE9602624539404 /* BakeSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 159638E8EC3904BDAA07B272 /* BakeSession.swift */; };
@@ -20,6 +21,7 @@
 		500B549A79CE9C2955E31543 /* BakingChefApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A125D618CA899D0F503B31F9 /* BakingChefApp.swift */; };
 		50CFE69BEC90878E84E70B2E /* AdjustTimeSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9D59AC989540FAED95EDB28 /* AdjustTimeSheet.swift */; };
 		5D9E3DD37A64B52DEA7311F6 /* AppModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEECCF1F9DBFD966963EB8DD /* AppModel.swift */; };
+		6F4473B7CE593231DA40D36D /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = B3B9F1B190714F745408B7F0 /* Localizable.xcstrings */; };
 		70444BDE31C5EC16704670F8 /* SessionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97633D6FFA0F5B69427F8B63 /* SessionView.swift */; };
 		787E611A59D9B72DA9BCC435 /* Sync.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FFE582BFC899EBE7A701C60 /* Sync.swift */; };
 		7CBDD3E3F6F83BE54CCF37C3 /* BakingChefWatchApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED983B849F9FCF1A31295942 /* BakingChefWatchApp.swift */; };
@@ -32,9 +34,12 @@
 		AF1D505D043F93C63F789C29 /* Sync.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FFE582BFC899EBE7A701C60 /* Sync.swift */; };
 		B18413F0D00B67A67D8122E6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2AED09F0612CF7410F03179E /* Assets.xcassets */; };
 		CC9788FE702E4495633E9F78 /* SessionCountdown.swift in Sources */ = {isa = PBXBuildFile; fileRef = 329DE0746DD31E9E9A53378D /* SessionCountdown.swift */; };
+		D18C86B7B546E584B9ACFA46 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = B3B9F1B190714F745408B7F0 /* Localizable.xcstrings */; };
 		D19E33894F8C6592FFBDF6F7 /* NotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32FAA17723C2DA76C5831F96 /* NotificationManager.swift */; };
 		DB947F1DAAE52505DF27C29D /* Format.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63A4CE978450E3BCA7F55D6A /* Format.swift */; };
 		E57A4762397888735BC46554 /* LiveActivityController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCAD7C86BAB21F510F26133B /* LiveActivityController.swift */; };
+		E8EA41A7CFADC64D91315082 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = B3B9F1B190714F745408B7F0 /* Localizable.xcstrings */; };
+		EC2C2EE10A85398BB8A62F40 /* LocalizedText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D1FA66BDA7CB69759ABBA90 /* LocalizedText.swift */; };
 		EE942D435EE7C39C8ECDEC52 /* PhoneConnectivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = B15A5247C8081638A0BAC153 /* PhoneConnectivity.swift */; };
 		FF5B5E4EB7224C24F90BD1C5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9541FB6B022C6EC4C6C0F9A4 /* Assets.xcassets */; };
 /* End PBXBuildFile section */
@@ -95,6 +100,7 @@
 		50392FABAF535A088D1FE3C6 /* BakingChefWatch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BakingChefWatch.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		63A4CE978450E3BCA7F55D6A /* Format.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Format.swift; sourceTree = "<group>"; };
 		6B6433FBA1497AC76E524626 /* BakingChef.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = BakingChef.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		6D1FA66BDA7CB69759ABBA90 /* LocalizedText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizedText.swift; sourceTree = "<group>"; };
 		7FFE582BFC899EBE7A701C60 /* Sync.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sync.swift; sourceTree = "<group>"; };
 		87286901E8CBE614772FAA1E /* Recipes */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Recipes; sourceTree = SOURCE_ROOT; };
 		90CF2F46BCD98C1D14C85217 /* RecipeListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeListView.swift; sourceTree = "<group>"; };
@@ -105,6 +111,7 @@
 		B10E0826F2D7686A5E6954A5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		B15A5247C8081638A0BAC153 /* PhoneConnectivity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneConnectivity.swift; sourceTree = "<group>"; };
 		B287093182A1A46EA75C2711 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		B3B9F1B190714F745408B7F0 /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
 		CCAD7C86BAB21F510F26133B /* LiveActivityController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveActivityController.swift; sourceTree = "<group>"; };
 		D21159D4F4CBCBAA3BC57559 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		D61A8CAFDFF31A00E7027B3A /* Recipe.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Recipe.swift; sourceTree = "<group>"; };
@@ -118,6 +125,7 @@
 			children = (
 				9726C1A12765C5AC8BD16778 /* Core */,
 				B61C452EACCBFB8476D7C802 /* LiveActivity */,
+				74EAF1F29DAC81B95BE35C7A /* Resources */,
 				CA60347982ABC94752BE4003 /* UI */,
 			);
 			path = Shared;
@@ -133,6 +141,14 @@
 				20C5E2BAAAE3476C02BB1B21 /* Shared */,
 				88E297E8B8C8A4957625C382 /* Products */,
 			);
+			sourceTree = "<group>";
+		};
+		74EAF1F29DAC81B95BE35C7A /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				B3B9F1B190714F745408B7F0 /* Localizable.xcstrings */,
+			);
+			path = Resources;
 			sourceTree = "<group>";
 		};
 		780E2ED861BC86C321C6D96D /* BakingChef */ = {
@@ -166,6 +182,7 @@
 			children = (
 				159638E8EC3904BDAA07B272 /* BakeSession.swift */,
 				63A4CE978450E3BCA7F55D6A /* Format.swift */,
+				6D1FA66BDA7CB69759ABBA90 /* LocalizedText.swift */,
 				D61A8CAFDFF31A00E7027B3A /* Recipe.swift */,
 				7FFE582BFC899EBE7A701C60 /* Sync.swift */,
 			);
@@ -267,6 +284,7 @@
 			buildConfigurationList = AAC3E719DDE08E5EBF970F0B /* Build configuration list for PBXNativeTarget "BakingChefWidget" */;
 			buildPhases = (
 				B109F53963EAB375DA4D5D9A /* Sources */,
+				B56A117A290BE6E45034FE28 /* Resources */,
 			);
 			buildRules = (
 			);
@@ -307,6 +325,7 @@
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				Base,
+				de,
 				en,
 			);
 			mainGroup = 6FF00B5BB2B99662D335DB4F;
@@ -329,6 +348,15 @@
 			buildActionMask = 2147483647;
 			files = (
 				B18413F0D00B67A67D8122E6 /* Assets.xcassets in Resources */,
+				6F4473B7CE593231DA40D36D /* Localizable.xcstrings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B56A117A290BE6E45034FE28 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E8EA41A7CFADC64D91315082 /* Localizable.xcstrings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -337,6 +365,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				FF5B5E4EB7224C24F90BD1C5 /* Assets.xcassets in Resources */,
+				D18C86B7B546E584B9ACFA46 /* Localizable.xcstrings in Resources */,
 				05532A052AFFE545F8D64FBF /* Recipes in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -355,6 +384,7 @@
 				500B549A79CE9C2955E31543 /* BakingChefApp.swift in Sources */,
 				DB947F1DAAE52505DF27C29D /* Format.swift in Sources */,
 				E57A4762397888735BC46554 /* LiveActivityController.swift in Sources */,
+				EC2C2EE10A85398BB8A62F40 /* LocalizedText.swift in Sources */,
 				D19E33894F8C6592FFBDF6F7 /* NotificationManager.swift in Sources */,
 				EE942D435EE7C39C8ECDEC52 /* PhoneConnectivity.swift in Sources */,
 				2991CB1B44989FEDA8288252 /* Recipe.swift in Sources */,
@@ -383,6 +413,7 @@
 				3AC1EF4A94F0AFE56162F03D /* BakeSession.swift in Sources */,
 				7CBDD3E3F6F83BE54CCF37C3 /* BakingChefWatchApp.swift in Sources */,
 				4FC758F0A200F35CE0DC3E41 /* Format.swift in Sources */,
+				328A863FD15B6452837209E6 /* LocalizedText.swift in Sources */,
 				A56DEB8CC799CFE3AF9C5A87 /* Recipe.swift in Sources */,
 				11D3B52BFF79719983F91280 /* SessionCountdown.swift in Sources */,
 				787E611A59D9B72DA9BCC435 /* Sync.swift in Sources */,
@@ -474,12 +505,14 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MARKETING_VERSION = 1.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				WATCHOS_DEPLOYMENT_TARGET = 10.0;
@@ -551,11 +584,13 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MARKETING_VERSION = 1.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				SWIFT_VERSION = 5.0;
 				WATCHOS_DEPLOYMENT_TARGET = 10.0;

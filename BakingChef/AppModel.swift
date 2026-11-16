@@ -53,7 +53,7 @@ final class AppModel {
                     throw ImportError(message: "\(url.lastPathComponent): \(RecipeParser.describe(error))")
                 }
             }
-            if count == 0 { importError = "Keine Rezepte gefunden." }
+            if count == 0 { importError = String(localized: "No recipes found.") }
         } catch let error as ImportError {
             importError = error.message
         } catch {

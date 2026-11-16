@@ -21,7 +21,7 @@ struct BakingChefApp: App {
 final class AppDelegate: NSObject, UIApplicationDelegate {
     func application(_ application: UIApplication,
                      didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil) -> Bool {
-        // Must be set before launch finishes so notification actions ("Erledigt") are delivered.
+        // Must be set before launch finishes so notification actions ("Done") are delivered.
         NotificationManager.shared.configure()
         return true
     }

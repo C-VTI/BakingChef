@@ -20,16 +20,16 @@ struct SessionView: View {
                     }
                     FinishRow(finish: schedule.finish, now: now)
                 } header: {
-                    Text("Schritte")
+                    Text("Steps")
                 } footer: {
-                    Text("Tippen hakt einen Schritt samt allen davor ab. Tippen auf einen erledigten Schritt springt dorthin zurück.")
+                    Text("Tapping a step checks it off together with all steps before it. Tapping a completed step jumps back to it.")
                 }
 
                 Section {
                     Button(role: .destructive) {
                         confirmEnd = true
                     } label: {
-                        Label("Backvorgang beenden", systemImage: "xmark.circle")
+                        Label("End bake", systemImage: "xmark.circle")
                             .frame(maxWidth: .infinity)
                     }
                 }
@@ -37,10 +37,10 @@ struct SessionView: View {
         }
         .navigationTitle(session.recipe.name)
         .navigationBarTitleDisplayMode(.inline)
-        .confirmationDialog("Backvorgang beenden?", isPresented: $confirmEnd, titleVisibility: .visible) {
-            Button("Beenden", role: .destructive) { model.endSession() }
+        .confirmationDialog("End bake?", isPresented: $confirmEnd, titleVisibility: .visible) {
+            Button("End", role: .destructive) { model.endSession() }
         } message: {
-            Text("Alle Erinnerungen werden gelöscht.")
+            Text("All reminders will be deleted.")
         }
         .sheet(isPresented: $showAdjust) {
             AdjustTimeSheet(session: session)
@@ -70,12 +70,12 @@ private struct StatusCard: View {
     }
 
     @ViewBuilder private var finishedContent: some View {
-        Text("Fertig! 🍞").font(.largeTitle.bold())
-        Text("Guten Appetit.").foregroundStyle(.secondary)
+        Text("Ready! 🍞").font(.largeTitle.bold())
+        Text("Enjoy!").foregroundStyle(.secondary)
         Button {
             model.endSession()
         } label: {
-            Label("Abschliessen", systemImage: "checkmark")
+            Label("Finish", systemImage: "checkmark")
                 .font(.headline).frame(maxWidth: .infinity)
         }
         .buttonStyle(.borderedProminent)
@@ -91,13 +91,17 @@ private struct StatusCard: View {
 
         HStack {
             if session.isPaused {
-                Label("Pausiert seit \(Format.countdown(now.timeIntervalSince(session.pausedAt!)))",
+                Label("Paused for \(Format.countdown(now.timeIntervalSince(session.pausedAt!)))",
                       systemImage: "snowflake")
                     .foregroundStyle(.blue)
             } else if let next {
-                Text("\(isDue ? "Jetzt" : "Nächster Schritt") · \(next + 1)/\(session.steps.count)")
+                if isDue {
+                    Text("Now · \(next + 1)/\(session.steps.count)")
+                } else {
+                    Text("Next step · \(next + 1)/\(session.steps.count)")
+                }
             } else {
-                Text("Im Ofen")
+                Text("In the oven")
             }
             Spacer()
         }
@@ -117,18 +121,26 @@ private struct StatusCard: View {
             Spacer()
         }
         if overdue {
-            Text("überfällig – Wartezeit startet mit „Erledigt“").font(.caption).foregroundStyle(.red)
+            Text("overdue – waiting time starts with “Done”").font(.caption).foregroundStyle(.red)
         } else if isDue {
-            Text(session.nextWorkSeconds > 0
-                 ? "Jetzt erledigen · ca. \(Format.duration(seconds: session.nextWorkSeconds))"
-                 : "Jetzt erledigen")
-                .font(.caption).foregroundStyle(.orange)
+            Group {
+                if session.nextWorkSeconds > 0 {
+                    Text("Do it now · approx. \(Format.duration(seconds: session.nextWorkSeconds))")
+                } else {
+                    Text("Do it now")
+                }
+            }
+            .font(.caption).foregroundStyle(.orange)
         }
 
         VStack(alignment: .leading, spacing: 2) {
-            Text("\(isDue ? "Fällig seit" : "Fällig um") \(Format.dayTime(session.nextDue, relativeTo: now))")
+            if isDue {
+                Text("Due since \(Format.dayTime(session.nextDue, relativeTo: now))")
+            } else {
+                Text("Due at \(Format.dayTime(session.nextDue, relativeTo: now))")
+            }
             HStack(spacing: 4) {
-                Text("Fertig ca. \(Format.dayTime(finish, relativeTo: now))")
+                Text("Ready approx. \(Format.dayTime(finish, relativeTo: now))")
                 if abs(deviation) >= 60 {
                     Text("(\(Format.signedMinutes(deviation)))")
                         .foregroundStyle(.orange)
@@ -148,7 +160,7 @@ private struct StatusCard: View {
             Button {
                 model.apply(.resume)
             } label: {
-                Label("Weiter", systemImage: "play.fill").font(.headline).frame(maxWidth: .infinity)
+                Label("Resume", systemImage: "play.fill").font(.headline).frame(maxWidth: .infinity)
             }
             .buttonStyle(.borderedProminent)
             .controlSize(.large)
@@ -157,7 +169,7 @@ private struct StatusCard: View {
                 Button {
                     model.apply(.complete(step: next))
                 } label: {
-                    Label("Erledigt", systemImage: "checkmark").font(.headline).frame(maxWidth: .infinity)
+                    Label("Done", systemImage: "checkmark").font(.headline).frame(maxWidth: .infinity)
                 }
                 .buttonStyle(.borderedProminent)
                 .controlSize(.large)
@@ -171,7 +183,7 @@ private struct StatusCard: View {
                 Button {
                     showAdjust = true
                 } label: {
-                    Label("Zeit anpassen", systemImage: "clock.arrow.circlepath").frame(maxWidth: .infinity)
+                    Label("Adjust time", systemImage: "clock.arrow.circlepath").frame(maxWidth: .infinity)
                 }
             }
             .buttonStyle(.bordered)
@@ -230,8 +242,8 @@ private struct SessionStepRow: View {
 
     private func detail(_ step: RecipeStep) -> String? {
         var parts: [String] = []
-        if step.workMinutes > 0 { parts.append("ca. \(Format.duration(minutes: step.workMinutes))") }
-        if step.waitMinutes > 0 { parts.append("danach \(Format.duration(minutes: step.waitMinutes))") }
+        if step.workMinutes > 0 { parts.append(String(localized: "approx. \(Format.duration(minutes: step.workMinutes))")) }
+        if step.waitMinutes > 0 { parts.append(String(localized: "then \(Format.duration(minutes: step.waitMinutes))")) }
         return parts.isEmpty ? nil : parts.joined(separator: " · ")
     }
 }
@@ -242,7 +254,7 @@ private struct FinishRow: View {
 
     var body: some View {
         HStack {
-            Label("Fertig", systemImage: "flag.checkered").font(.headline)
+            Label("Ready", systemImage: "flag.checkered").font(.headline)
             Spacer()
             Text(Format.dayTime(finish, relativeTo: now)).font(.headline).monospacedDigit()
         }
