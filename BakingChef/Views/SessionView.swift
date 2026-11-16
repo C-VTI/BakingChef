@@ -24,21 +24,19 @@ struct SessionView: View {
                 } footer: {
                     Text("Tippen hakt einen Schritt samt allen davor ab. Tippen auf einen erledigten Schritt springt dorthin zurück.")
                 }
+
+                Section {
+                    Button(role: .destructive) {
+                        confirmEnd = true
+                    } label: {
+                        Label("Backvorgang beenden", systemImage: "xmark.circle")
+                            .frame(maxWidth: .infinity)
+                    }
+                }
             }
         }
         .navigationTitle(session.recipe.name)
         .navigationBarTitleDisplayMode(.inline)
-        .toolbar {
-            ToolbarItem(placement: .primaryAction) {
-                Menu {
-                    Button("Backvorgang beenden", systemImage: "xmark.circle", role: .destructive) {
-                        confirmEnd = true
-                    }
-                } label: {
-                    Image(systemName: "ellipsis.circle")
-                }
-            }
-        }
         .confirmationDialog("Backvorgang beenden?", isPresented: $confirmEnd, titleVisibility: .visible) {
             Button("Beenden", role: .destructive) { model.endSession() }
         } message: {
