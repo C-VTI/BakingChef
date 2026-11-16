@@ -67,6 +67,8 @@ final class NotificationManager: NSObject, UNUserNotificationCenterDelegate {
         }
         Task { @MainActor in
             AppModel.shared.handleRemote(.complete(step: step), sessionID: id)
+            // Keep the app alive until the lock screen shows the new countdown.
+            await AppModel.shared.flushLiveActivity()
             completionHandler()
         }
     }

@@ -111,6 +111,9 @@ final class AppModel {
 
     func pushToWatch() { connectivity.send(session) }
 
+    /// Waits until the Live Activity has received the latest state (call before the app gets suspended).
+    func flushLiveActivity() async { await liveActivity.flush() }
+
     func appBecameActive() { syncSideEffects() }
 
     func requestNotificationPermission() async {

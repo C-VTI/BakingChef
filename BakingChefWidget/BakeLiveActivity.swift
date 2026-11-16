@@ -12,7 +12,7 @@ struct BakingChefWidgetBundle: WidgetBundle {
 struct BakeLiveActivity: Widget {
     var body: some WidgetConfiguration {
         ActivityConfiguration(for: BakeActivityAttributes.self) { context in
-            LockScreenView(attributes: context.attributes, state: context.state)
+            LockScreenView(attributes: context.attributes, state: context.state, isStale: context.isStale)
                 .activitySystemActionForegroundColor(.orange)
         } dynamicIsland: { context in
             DynamicIsland {
@@ -22,7 +22,7 @@ struct BakeLiveActivity: Widget {
                         .foregroundStyle(.secondary)
                 }
                 DynamicIslandExpandedRegion(.trailing) {
-                    CountdownText(state: context.state)
+                    CountdownText(state: context.state, isStale: context.isStale)
                         .font(.title2.weight(.semibold))
                         .monospacedDigit()
                         .multilineTextAlignment(.trailing)
@@ -43,12 +43,13 @@ struct BakeLiveActivity: Widget {
                 Image(systemName: context.state.pausedAt == nil ? "timer" : "snowflake")
                     .foregroundStyle(.orange)
             } compactTrailing: {
-                CountdownText(state: context.state)
+                CountdownText(state: context.state, isStale: context.isStale)
                     .monospacedDigit()
                     .multilineTextAlignment(.trailing)
                     .frame(maxWidth: 64)
             } minimal: {
-                Image(systemName: "timer").foregroundStyle(.orange)
+                Image(systemName: context.state.pausedAt == nil ? "timer" : "snowflake")
+                    .foregroundStyle(.orange)
             }
         }
     }
@@ -57,6 +58,7 @@ struct BakeLiveActivity: Widget {
 private struct LockScreenView: View {
     let attributes: BakeActivityAttributes
     let state: BakeActivityAttributes.ContentState
+    let isStale: Bool
 
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
@@ -70,7 +72,7 @@ private struct LockScreenView: View {
 
             HStack(alignment: .center) {
                 VStack(alignment: .leading, spacing: 2) {
-                    Text(state.pausedAt == nil ? "Nächster Schritt" : "Pausiert seit")
+                    Text(state.pausedAt == nil ? "Nächster Schritt" : "Danach")
                         .font(.caption2)
                         .foregroundStyle(.secondary)
                     Text(state.title)
@@ -78,7 +80,7 @@ private struct LockScreenView: View {
                         .lineLimit(2)
                 }
                 Spacer()
-                CountdownText(state: state)
+                CountdownText(state: state, isStale: isStale)
                     .font(.system(size: 36, weight: .semibold, design: .rounded))
                     .monospacedDigit()
                     .multilineTextAlignment(.trailing)
@@ -99,15 +101,22 @@ private struct LockScreenView: View {
     }
 }
 
-/// Counts down to the next step; while paused it counts the pause duration up.
+/// Counts down to the next step. Once it is due it counts the overdue time up ("+m:ss").
+/// In the fridge (paused) there is no counter at all.
 private struct CountdownText: View {
     let state: BakeActivityAttributes.ContentState
+    let isStale: Bool
 
     var body: some View {
-        if let paused = state.pausedAt {
-            Text(paused, style: .timer)
+        if state.pausedAt != nil {
+            Image(systemName: "snowflake")
+                .foregroundStyle(.blue)
+        } else if isStale || state.dueAt <= state.updatedAt {
+            // `.timer` counts up for dates in the past.
+            (Text("+") + Text(state.dueAt, style: .timer))
+                .foregroundStyle(.red)
         } else {
-            Text(timerInterval: min(state.updatedAt, state.dueAt)...state.dueAt, countsDown: true)
+            Text(timerInterval: state.updatedAt...state.dueAt, countsDown: true)
         }
     }
 }
