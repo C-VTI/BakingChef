@@ -10,7 +10,8 @@ final class AppModel {
     static let shared = AppModel()
 
     private(set) var recipes: [Recipe] = []
-    private(set) var importedIDs: Set<String> = []
+    private(set) var customIDs: Set<String> = []
+    private(set) var bundledIDs: Set<String> = []
     private(set) var session: BakeSession?
     var importError: String?
 
@@ -30,12 +31,35 @@ final class AppModel {
     // MARK: Recipes
 
     func reloadRecipes() {
-        let (all, imported) = store.loadAll()
-        recipes = all
-        importedIDs = imported
+        let contents = store.loadAll()
+        recipes = contents.recipes
+        customIDs = contents.customIDs
+        bundledIDs = contents.bundledIDs
     }
 
-    func isImported(_ recipe: Recipe) -> Bool { importedIDs.contains(recipe.id) }
+    /// Imported, created or edited in the app (can be deleted / reset).
+    func isCustom(_ recipe: Recipe) -> Bool { customIDs.contains(recipe.id) }
+    /// Ships with the app (deleting the own version restores the original).
+    func isBundled(_ recipe: Recipe) -> Bool { bundledIDs.contains(recipe.id) }
+
+    func recipe(id: String) -> Recipe? { recipes.first { $0.id == id } }
+
+    /// Saves a recipe from the editor. New recipes get a unique ID derived from the name.
+    @discardableResult
+    func save(_ recipe: Recipe, isNew: Bool) throws -> Recipe {
+        var recipe = recipe
+        if isNew {
+            let base = Recipe.slug(recipe.nameText.text(for: "en"))
+            let stem = base.isEmpty ? "recipe" : base
+            var id = stem, n = 2
+            let taken = Set(recipes.map(\.id)).union(bundledIDs)
+            while taken.contains(id) { id = "\(stem)-\(n)"; n += 1 }
+            recipe.id = id
+        }
+        try store.save(recipe)
+        reloadRecipes()
+        return recipe
+    }
 
     func importRecipes(from result: Result<[URL], Error>) {
         do {
@@ -62,7 +86,8 @@ final class AppModel {
         reloadRecipes()
     }
 
-    func deleteImported(_ recipe: Recipe) {
+    /// Deletes an own recipe; for an edited bundled recipe this restores the original.
+    func deleteCustom(_ recipe: Recipe) {
         store.delete(id: recipe.id)
         reloadRecipes()
     }

@@ -3,6 +3,8 @@
 Back-Zeitplan als abhakbare Taskliste mit Erinnerungen – für iPhone und Apple Watch.
 
 - **Rezepte** als JSON (eingebaut: *Sauerteig Brot*, *Anstellgut auffrischen* – jeweils Englisch + Deutsch), eigene per „Importieren“
+- **Rezept-Editor** in der App: neues Rezept mit „+“, bestehendes über „Bearbeiten“ (Name, Beschreibung, Schritte sortieren/löschen, Dauer, Wartezeit, Zutaten, Erinnerung). Oben im Editor wählt man die Sprache (Englisch / Deutsch); Texte werden pro Sprache bearbeitet, fehlende Übersetzungen sind orange markiert (der graue Platzhalter zeigt den Text, den die App sonst anzeigt). Mengen, Zeiten und Reihenfolge gelten für alle Sprachen. Beim Sichern werden Texte, die in allen Sprachen gleich sind, zu einem einfachen String zusammengefasst. Ein bearbeitetes eingebautes Rezept lässt sich auf das Original zurücksetzen
+- **Export** als JSON-Datei (einzelnes Rezept in der Detailansicht, alle in der Rezeptliste) über das Teilen-Menü: „In Dateien sichern“, AirDrop, … – wieder importierbar
 - **Menge** mit Multiplikator (0.5er-Schritte)
 - **Start jetzt** → Zeitplan wird vorwärts berechnet (Bearbeitungsdauer + Wartezeit pro Schritt)
 - **Wartezeit startet mit „Erledigt“**: der nächste Schritt ist fällig um „erledigt + Wartezeit“. Spätere Schritte und „Fertig ca.“ sind eine Prognose, die sich automatisch nachführt, wenn ein Schritt länger dauert
@@ -92,6 +94,7 @@ englischen Namen gebildet.
 
 Eine Datei darf ein Rezept, ein Array von Rezepten oder `{ "recipes": [...] }` enthalten.
 Import: JSON-Datei in iCloud Drive / „Auf meinem iPhone“ ablegen (oder per AirDrop) → in der App **Importieren**.
+Eigene, importierte und bearbeitete Rezepte liegen in der App unter `Documents/Recipes`.
 
 ## Aufbau
 

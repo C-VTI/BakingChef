@@ -1,17 +1,26 @@
 import Foundation
 
-/// Bundled recipes (Recipes/*.json in the app) plus imported ones (Documents/Recipes).
-/// An imported recipe with the same `id` replaces the bundled one.
+/// Bundled recipes (Recipes/*.json in the app) plus own ones (Documents/Recipes: imported,
+/// created or edited in the app). An own recipe with the same `id` replaces the bundled one.
 struct RecipeStore {
+    struct Contents {
+        var recipes: [Recipe]
+        /// IDs of the own recipes (imported, created or edited).
+        var customIDs: Set<String>
+        /// IDs of the recipes that ship with the app.
+        var bundledIDs: Set<String>
+    }
+
     private var importDirectory: URL {
         FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
             .appendingPathComponent("Recipes", isDirectory: true)
     }
 
-    func loadAll() -> (recipes: [Recipe], importedIDs: Set<String>) {
+    func loadAll() -> Contents {
         var byID: [String: Recipe] = [:]
-        let bundled = Bundle.main.urls(forResourcesWithExtension: "json", subdirectory: "Recipes") ?? []
-        for recipe in bundled.flatMap(load) { byID[recipe.id] = recipe }
+        let bundledFiles = Bundle.main.urls(forResourcesWithExtension: "json", subdirectory: "Recipes") ?? []
+        let bundled = bundledFiles.flatMap(load)
+        for recipe in bundled { byID[recipe.id] = recipe }
 
         let files = (try? FileManager.default.contentsOfDirectory(
             at: importDirectory, includingPropertiesForKeys: nil)) ?? []
@@ -19,7 +28,7 @@ struct RecipeStore {
         for recipe in imported { byID[recipe.id] = recipe }
 
         let sorted = byID.values.sorted { $0.name.localizedCompare($1.name) == .orderedAscending }
-        return (sorted, Set(imported.map(\.id)))
+        return Contents(recipes: sorted, customIDs: Set(imported.map(\.id)), bundledIDs: Set(bundled.map(\.id)))
     }
 
     func save(_ recipe: Recipe) throws {

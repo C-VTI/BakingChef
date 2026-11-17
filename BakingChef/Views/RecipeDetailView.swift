@@ -2,8 +2,15 @@ import SwiftUI
 
 struct RecipeDetailView: View {
     @Environment(AppModel.self) private var model
-    let recipe: Recipe
+    @Environment(\.dismiss) private var dismiss
+    private let initial: Recipe
     @State private var multiplier = 1.0
+    @State private var showEditor = false
+
+    init(recipe: Recipe) { initial = recipe }
+
+    /// Always the latest saved version (the recipe can be edited while this view is open).
+    private var recipe: Recipe { model.recipe(id: initial.id) ?? initial }
 
     var body: some View {
         TimelineView(.everyMinute) { context in
@@ -45,6 +52,20 @@ struct RecipeDetailView: View {
             }
         }
         .navigationTitle(recipe.name)
+        .toolbar {
+            ToolbarItemGroup(placement: .primaryAction) {
+                ShareLink(item: RecipeFile(recipes: [recipe]), preview: SharePreview(recipe.name)) {
+                    Label("Export", systemImage: "square.and.arrow.up")
+                }
+                Button("Edit") { showEditor = true }
+            }
+        }
+        .sheet(isPresented: $showEditor, onDismiss: {
+            // The recipe was deleted in the editor.
+            if model.recipe(id: initial.id) == nil { dismiss() }
+        }) {
+            RecipeEditorView(recipe: recipe)
+        }
         .safeAreaInset(edge: .bottom) {
             if recipe.isScheduled {
                 Button {

@@ -234,9 +234,18 @@ enum RecipeParser {
     }
 
     static func encode(_ recipe: Recipe) throws -> Data {
+        try encoder.encode(recipe)
+    }
+
+    /// Several recipes as `{ "recipes": [...] }` (one file, readable by `decode`).
+    static func encode(_ recipes: [Recipe]) throws -> Data {
+        try encoder.encode(["recipes": recipes])
+    }
+
+    private static var encoder: JSONEncoder {
         let encoder = JSONEncoder()
         encoder.outputFormatting = [.prettyPrinted, .sortedKeys, .withoutEscapingSlashes]
-        return try encoder.encode(recipe)
+        return encoder
     }
 
     /// Human readable, localized description of a decoding error.

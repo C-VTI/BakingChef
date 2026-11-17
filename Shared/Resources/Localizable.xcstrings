@@ -31,6 +31,56 @@
         }
       }
     },
+    "%lld h" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld h"
+          }
+        }
+      }
+    },
+    "%lld ingredients" : {
+      "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld ingredient"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld ingredients"
+                }
+              }
+            }
+          }
+        },
+        "de" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld Zutat"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld Zutaten"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "%lld min" : {
       "localizations" : {
         "de" : {
@@ -101,6 +151,76 @@
         }
       }
     },
+    "%lld texts not translated into %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$#@texts@"
+          },
+          "substitutions" : {
+            "texts" : {
+              "argNum" : 1,
+              "formatSpecifier" : "lld",
+              "variations" : {
+                "plural" : {
+                  "one" : {
+                    "stringUnit" : {
+                      "state" : "translated",
+                      "value" : "%arg text not translated into %2$@"
+                    }
+                  },
+                  "other" : {
+                    "stringUnit" : {
+                      "state" : "translated",
+                      "value" : "%arg texts not translated into %2$@"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$#@texts@"
+          },
+          "substitutions" : {
+            "texts" : {
+              "argNum" : 1,
+              "formatSpecifier" : "lld",
+              "variations" : {
+                "plural" : {
+                  "one" : {
+                    "stringUnit" : {
+                      "state" : "translated",
+                      "value" : "%arg Text nicht auf %2$@ übersetzt"
+                    }
+                  },
+                  "other" : {
+                    "stringUnit" : {
+                      "state" : "translated",
+                      "value" : "%arg Texte nicht auf %2$@ übersetzt"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "%lld." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld."
+          }
+        }
+      }
+    },
     "(%@)" : {
       "localizations" : {
         "de" : {
@@ -131,12 +251,32 @@
         }
       }
     },
-    "Add your own recipes as JSON files via “Import”. Imported recipes can be deleted by swiping." : {
+    "Add at least one step." : {
       "localizations" : {
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Eigene Rezepte als JSON-Datei über „Importieren“ hinzufügen. Importierte Rezepte lassen sich mit Wischen löschen."
+            "value" : "Mindestens einen Schritt hinzufügen."
+          }
+        }
+      }
+    },
+    "Add ingredient" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zutat hinzufügen"
+          }
+        }
+      }
+    },
+    "Add step" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Schritt hinzufügen"
           }
         }
       }
@@ -151,12 +291,42 @@
         }
       }
     },
+    "All recipes" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alle Rezepte"
+          }
+        }
+      }
+    },
     "All reminders will be deleted." : {
       "localizations" : {
         "de" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Alle Erinnerungen werden gelöscht."
+          }
+        }
+      }
+    },
+    "Amount" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Menge"
+          }
+        }
+      }
+    },
+    "An extra notification, e.g. to preheat the oven." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Eine zusätzliche Benachrichtigung, z. B. zum Ofen vorheizen."
           }
         }
       }
@@ -181,6 +351,16 @@
         }
       }
     },
+    "Before the step" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vor dem Schritt"
+          }
+        }
+      }
+    },
     "Cancel" : {
       "localizations" : {
         "de" : {
@@ -191,12 +371,82 @@
         }
       }
     },
+    "Create recipes with “+” or import JSON files. Swipe to delete your own recipes or to reset edited built-in ones." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rezepte mit „+“ erstellen oder als JSON-Datei importieren. Eigene Rezepte mit Wischen löschen, bearbeitete eingebaute Rezepte zurücksetzen."
+          }
+        }
+      }
+    },
+    "Delete" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Löschen"
+          }
+        }
+      }
+    },
+    "Delete recipe" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rezept löschen"
+          }
+        }
+      }
+    },
+    "Delete recipe?" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rezept löschen?"
+          }
+        }
+      }
+    },
+    "Description (optional)" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Beschreibung (optional)"
+          }
+        }
+      }
+    },
     "Direction" : {
       "localizations" : {
         "de" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Richtung"
+          }
+        }
+      }
+    },
+    "Discard" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Verwerfen"
+          }
+        }
+      }
+    },
+    "Discard changes?" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Änderungen verwerfen?"
           }
         }
       }
@@ -271,6 +521,26 @@
         }
       }
     },
+    "Edit" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bearbeiten"
+          }
+        }
+      }
+    },
+    "Edit recipe" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rezept bearbeiten"
+          }
+        }
+      }
+    },
     "End" : {
       "localizations" : {
         "de" : {
@@ -307,6 +577,56 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Guten Appetit."
+          }
+        }
+      }
+    },
+    "Every ingredient needs a name." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Jede Zutat braucht einen Namen."
+          }
+        }
+      }
+    },
+    "Every reminder needs a text." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Jede Erinnerung braucht einen Text."
+          }
+        }
+      }
+    },
+    "Every step needs a title." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Jeder Schritt braucht einen Titel."
+          }
+        }
+      }
+    },
+    "Export" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Exportieren"
+          }
+        }
+      }
+    },
+    "Export all" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alle exportieren"
           }
         }
       }
@@ -391,6 +711,16 @@
         }
       }
     },
+    "Ingredient" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zutat"
+          }
+        }
+      }
+    },
     "Ingredients" : {
       "localizations" : {
         "de" : {
@@ -411,6 +741,16 @@
         }
       }
     },
+    "Language" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sprache"
+          }
+        }
+      }
+    },
     "Later" : {
       "localizations" : {
         "de" : {
@@ -427,6 +767,26 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Modus"
+          }
+        }
+      }
+    },
+    "Name" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Name"
+          }
+        }
+      }
+    },
+    "New recipe" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Neues Rezept"
           }
         }
       }
@@ -491,6 +851,26 @@
         }
       }
     },
+    "Not translated" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nicht übersetzt"
+          }
+        }
+      }
+    },
+    "Note (optional)" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Notiz (optional)"
+          }
+        }
+      }
+    },
     "Now · %lld/%lld" : {
       "localizations" : {
         "de" : {
@@ -547,6 +927,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Pausiert seit %@"
+          }
+        }
+      }
+    },
+    "Please enter a name." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bitte einen Namen eingeben."
           }
         }
       }
@@ -631,12 +1021,92 @@
         }
       }
     },
+    "Reminder before this step" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Erinnerung vor diesem Schritt"
+          }
+        }
+      }
+    },
+    "Reminder text" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Text der Erinnerung"
+          }
+        }
+      }
+    },
+    "Reorder" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sortieren"
+          }
+        }
+      }
+    },
+    "Reset" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zurücksetzen"
+          }
+        }
+      }
+    },
+    "Reset recipe to the original? Your changes will be lost." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rezept auf das Original zurücksetzen? Deine Änderungen gehen verloren."
+          }
+        }
+      }
+    },
+    "Reset to original" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Auf Original zurücksetzen"
+          }
+        }
+      }
+    },
     "Resume" : {
       "localizations" : {
         "de" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Weiter"
+          }
+        }
+      }
+    },
+    "Save" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sichern"
+          }
+        }
+      }
+    },
+    "Saving failed" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sichern fehlgeschlagen"
           }
         }
       }
@@ -701,6 +1171,16 @@
         }
       }
     },
+    "Step %lld" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Schritt %lld"
+          }
+        }
+      }
+    },
     "Step %lld of %lld" : {
       "localizations" : {
         "de" : {
@@ -731,12 +1211,32 @@
         }
       }
     },
+    "Swipe left to delete a step." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nach links wischen, um einen Schritt zu löschen."
+          }
+        }
+      }
+    },
     "Tapping a step checks it off together with all steps before it. Tapping a completed step jumps back to it." : {
       "localizations" : {
         "de" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Tippen hakt einen Schritt samt allen davor ab. Tippen auf einen erledigten Schritt springt dorthin zurück."
+          }
+        }
+      }
+    },
+    "Texts are edited per language. Amounts, times and the order of the steps apply to all languages." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Texte werden pro Sprache bearbeitet. Mengen, Zeiten und die Reihenfolge der Schritte gelten für alle Sprachen."
           }
         }
       }
@@ -751,12 +1251,82 @@
         }
       }
     },
+    "The note appears in the notification when the step has no ingredients." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Die Notiz erscheint in der Benachrichtigung, wenn der Schritt keine Zutaten hat."
+          }
+        }
+      }
+    },
+    "The waiting time starts when the step is checked off. The work time is only used for the forecast. Without any waiting time the recipe has no schedule." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Die Wartezeit startet, wenn der Schritt abgehakt wird. Die Bearbeitungsdauer dient nur der Prognose. Ohne Wartezeit hat das Rezept keinen Zeitplan."
+          }
+        }
+      }
+    },
     "Then" : {
       "localizations" : {
         "de" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Danach"
+          }
+        }
+      }
+    },
+    "Title" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Titel"
+          }
+        }
+      }
+    },
+    "Unit" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Einheit"
+          }
+        }
+      }
+    },
+    "Untitled step" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Schritt ohne Titel"
+          }
+        }
+      }
+    },
+    "Waiting time" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wartezeit"
+          }
+        }
+      }
+    },
+    "Work time" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bearbeitungsdauer"
           }
         }
       }
@@ -781,12 +1351,48 @@
         }
       }
     },
+    "edited" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "bearbeitet"
+          }
+        }
+      }
+    },
+    "max" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "max"
+          }
+        }
+      }
+    },
     "overdue – waiting time starts with “Done”" : {
       "localizations" : {
         "de" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "überfällig – Wartezeit startet mit „Erledigt“"
+          }
+        }
+      }
+    },
+    "reorder.done" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Done"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fertig"
           }
         }
       }
